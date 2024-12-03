@@ -1,6 +1,9 @@
 import React, { useEffect, useRef } from 'react';
 import { useDesignStore } from '../../../stores/designStore';
 import type { Design } from '../../../types/design';
+import { useResizable } from '../../../hooks/useResizable';
+import { useDraggable } from '../../../hooks/useDraggable';
+import { useRotatable } from '../../../hooks/useRotatable';
 
 interface DesignOverlayProps {
   design: Design;
@@ -24,84 +27,82 @@ export default function DesignOverlay({ design, printableArea, view }: DesignOve
   } = useDesignStore();
   
   const designRef = useRef<HTMLDivElement>(null);
-  const isDragging = useRef(false);
-  const startPos = useRef({ x: 0, y: 0 });
+  const imageRef = useRef<HTMLImageElement>(null);
 
+  // Initialize design position and scale
   useEffect(() => {
-    // Set initial position to 30% of printable area
-    if (designRef.current) {
+    if (imageRef.current) {
+      const img = imageRef.current;
       const initialScale = Math.min(
-        (printableArea.width * 0.3) / designRef.current.offsetWidth,
-        (printableArea.height * 0.3) / designRef.current.offsetHeight
+        (printableArea.width * 0.3) / img.naturalWidth,
+        (printableArea.height * 0.3) / img.naturalHeight
       );
       
       updateDesignScale(initialScale);
       updateDesignPosition(
-        printableArea.x + (printableArea.width - designRef.current.offsetWidth * initialScale) / 2,
-        printableArea.y + (printableArea.height - designRef.current.offsetHeight * initialScale) / 2
+        printableArea.x + (printableArea.width - img.naturalWidth * initialScale) / 2,
+        printableArea.y + (printableArea.height - img.naturalHeight * initialScale) / 2
       );
     }
   }, [design, view]);
 
-  const handleMouseDown = (e: React.MouseEvent) => {
-    isDragging.current = true;
-    startPos.current = {
-      x: e.clientX - designPosition.x,
-      y: e.clientY - designPosition.y
-    };
-  };
+  const { handleResizeStart } = useResizable({
+    ref: designRef,
+    scale: designScale,
+    onScale: updateDesignScale,
+    minScale: 0.1,
+    maxScale: 3,
+    aspectRatio: true,
+    bounds: printableArea
+  });
 
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!isDragging.current) return;
+  const { handleDragStart } = useDraggable({
+    ref: designRef,
+    position: designPosition,
+    onMove: updateDesignPosition,
+    bounds: printableArea,
+    scale: designScale
+  });
 
-    let newX = e.clientX - startPos.current.x;
-    let newY = e.clientY - startPos.current.y;
-
-    // Constrain to printable area
-    newX = Math.max(printableArea.x, Math.min(newX, printableArea.x + printableArea.width - (designRef.current?.offsetWidth || 0) * designScale));
-    newY = Math.max(printableArea.y, Math.min(newY, printableArea.y + printableArea.height - (designRef.current?.offsetHeight || 0) * designScale));
-
-    updateDesignPosition(newX, newY);
-  };
-
-  const handleMouseUp = () => {
-    isDragging.current = false;
-  };
+  const { handleRotateStart } = useRotatable({
+    ref: designRef,
+    rotation: designRotation,
+    onRotate: updateDesignRotation
+  });
 
   return (
     <div
       ref={designRef}
-      className="absolute cursor-move"
+      className="absolute"
       style={{
         transform: `translate(${designPosition.x}px, ${designPosition.y}px) scale(${designScale}) rotate(${designRotation}deg)`,
         transformOrigin: 'top left',
-        mixBlendMode: 'multiply'
+        cursor: 'move',
+        zIndex: 20
       }}
-      onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
+      onMouseDown={handleDragStart}
     >
       <img
+        ref={imageRef}
         src={design.image_url}
         alt="Design overlay"
-        className="max-w-full h-auto pointer-events-none"
+        className="max-w-full h-auto select-none"
         draggable={false}
       />
       
-      <div className="absolute -right-4 -bottom-4 w-8 h-8 bg-green-500 rounded-full cursor-se-resize"
-           onMouseDown={(e) => {
-             e.stopPropagation();
-             // Handle resize logic
-           }} 
-      />
+      {/* Resize handles */}
+      <div className="absolute -right-3 -bottom-3 w-6 h-6 bg-green-500 rounded-full cursor-se-resize z-30"
+           onMouseDown={handleResizeStart} />
+      <div className="absolute -left-3 -bottom-3 w-6 h-6 bg-green-500 rounded-full cursor-sw-resize z-30"
+           onMouseDown={handleResizeStart} />
+      <div className="absolute -right-3 -top-3 w-6 h-6 bg-green-500 rounded-full cursor-ne-resize z-30"
+           onMouseDown={handleResizeStart} />
+      <div className="absolute -left-3 -top-3 w-6 h-6 bg-green-500 rounded-full cursor-nw-resize z-30"
+           onMouseDown={handleResizeStart} />
       
-      <div className="absolute top-1/2 -right-4 w-8 h-8 bg-green-500 rounded-full cursor-e-resize transform -translate-y-1/2"
-           onMouseDown={(e) => {
-             e.stopPropagation();
-             // Handle rotation logic
-           }}
-      />
+      {/* Rotation handle */}
+      <div className="absolute top-1/2 -right-8 w-6 h-6 bg-green-500 rounded-full cursor-e-resize z-30"
+           onMouseDown={handleRotateStart} />
     </div>
   );
 }

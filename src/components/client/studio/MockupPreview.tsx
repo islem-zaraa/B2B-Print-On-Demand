@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { TransformWrapper, TransformComponent } from 'react-zoom-pan-pinch';
-import { ZoomIn, ZoomOut, RotateCw, Grid, Download } from 'lucide-react';
+import { ZoomIn, ZoomOut, RotateCw } from 'lucide-react';
 import { useDesignStore } from '../../../stores/designStore';
 import DesignOverlay from './DesignOverlay';
 import ViewControls from './ViewControls';
@@ -37,74 +36,44 @@ export default function MockupPreview() {
         ref={containerRef}
         className="relative aspect-square bg-black/30 rounded-xl overflow-hidden"
       >
-        <TransformWrapper
-          initialScale={1}
-          initialPositionX={0}
-          initialPositionY={0}
-          minScale={0.5}
-          maxScale={2}
-          limitToBounds={true}
-          centerOnInit={true}
-        >
-          {({ zoomIn, zoomOut, resetTransform }) => (
-            <>
-              <div className="absolute top-4 left-4 z-30 flex gap-2">
-                <button
-                  onClick={() => zoomIn()}
-                  className="p-2 rounded-lg bg-green-500/10 text-green-500 hover:bg-green-500/20"
-                >
-                  <ZoomIn size={20} />
-                </button>
-                <button
-                  onClick={() => zoomOut()}
-                  className="p-2 rounded-lg bg-green-500/10 text-green-500 hover:bg-green-500/20"
-                >
-                  <ZoomOut size={20} />
-                </button>
-                <button
-                  onClick={() => resetTransform()}
-                  className="p-2 rounded-lg bg-green-500/10 text-green-500 hover:bg-green-500/20"
-                >
-                  <RotateCw size={20} />
-                </button>
-              </div>
+        <div className="absolute top-4 left-4 z-50 flex gap-2">
+          <button className="p-2 rounded-lg bg-green-500/10 text-green-500 hover:bg-green-500/20">
+            <ZoomIn size={20} />
+          </button>
+          <button className="p-2 rounded-lg bg-green-500/10 text-green-500 hover:bg-green-500/20">
+            <ZoomOut size={20} />
+          </button>
+          <button className="p-2 rounded-lg bg-green-500/10 text-green-500 hover:bg-green-500/20">
+            <RotateCw size={20} />
+          </button>
+        </div>
 
-              <TransformComponent
-                wrapperClass="!w-full !h-full"
-                contentClass="!w-full !h-full"
-              >
-                <div className="relative w-full h-full">
-                  {/* Base Mockup Image */}
-                  <div className="absolute inset-0 z-10">
-                    <img
-                      src={views[currentView]}
-                      alt={`${currentView} view`}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                  
-                  {/* Design Overlay */}
-                  {currentDesign && (
-                    <div className="absolute inset-0 z-20">
-                      <DesignOverlay
-                        design={currentDesign}
-                        printableArea={printableAreas[currentView]}
-                        view={currentView}
-                      />
-                    </div>
-                  )}
-
-                  {/* Grid Overlay */}
-                  {showGrid && (
-                    <div className="absolute inset-0 z-30">
-                      <GridOverlay />
-                    </div>
-                  )}
-                </div>
-              </TransformComponent>
-            </>
+        {/* Base Mockup Image */}
+        <div className="absolute inset-0">
+          <img
+            src={views[currentView]}
+            alt={`${currentView} view`}
+            className="w-full h-full object-contain"
+          />
+        </div>
+        
+        {/* Design Overlay Container */}
+        <div className="absolute inset-0">
+          {currentDesign && (
+            <DesignOverlay
+              design={currentDesign}
+              printableArea={printableAreas[currentView]}
+              view={currentView}
+            />
           )}
-        </TransformWrapper>
+        </div>
+
+        {/* Grid Overlay */}
+        {showGrid && (
+          <div className="absolute inset-0 pointer-events-none">
+            <GridOverlay />
+          </div>
+        )}
       </div>
 
       <div className="flex justify-center gap-8 text-sm text-gray-400">
