@@ -9,9 +9,9 @@ export default function DesignWorkspace() {
   const [activeTab, setActiveTab] = useState<'design' | 'product'>('design');
 
   return (
-    <div className="flex-1 grid lg:grid-cols-[350px,1fr] gap-6 min-h-0">
+    <div className="grid lg:grid-cols-[350px,1fr] gap-6">
       {/* Left Panel */}
-      <div className="flex flex-col bg-black/30 border border-green-500/10 rounded-xl overflow-hidden">
+      <div className="flex flex-col bg-black/30 border border-green-500/10 rounded-xl">
         <div className="flex border-b border-green-500/10">
           <button
             onClick={() => setActiveTab('design')}
@@ -35,7 +35,7 @@ export default function DesignWorkspace() {
           </button>
         </div>
         
-        <div className="flex-1 overflow-y-auto p-4">
+        <div className="p-4">
           {activeTab === 'design' ? <DesignTools /> : <ProductOptions />}
         </div>
       </div>

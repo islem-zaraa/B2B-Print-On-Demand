@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid, Download } from 'lucide-react';
+import { Grid } from 'lucide-react';
 
 interface ViewControlsProps {
   currentView: 'front' | 'back' | 'side';
@@ -22,18 +22,16 @@ export default function ViewControls({
 
   return (
     <div className="flex items-center justify-between">
-      <div className="flex gap-2">
-        <button
-          onClick={() => setShowGrid(!showGrid)}
-          className={`p-2 rounded-lg transition-colors ${
-            showGrid 
-              ? 'bg-green-500 text-black' 
-              : 'bg-green-500/10 text-green-500 hover:bg-green-500/20'
-          }`}
-        >
-          <Grid size={20} />
-        </button>
-      </div>
+      <button
+        onClick={() => setShowGrid(!showGrid)}
+        className={`p-2 rounded-lg transition-colors ${
+          showGrid 
+            ? 'bg-green-500 text-black' 
+            : 'bg-green-500/10 text-green-500 hover:bg-green-500/20'
+        }`}
+      >
+        <Grid size={20} />
+      </button>
 
       <div className="flex gap-2">
         {Object.entries(views).map(([key, label]) => (
@@ -50,10 +48,6 @@ export default function ViewControls({
           </button>
         ))}
       </div>
-
-      <button className="p-2 rounded-lg bg-green-500/10 text-green-500 hover:bg-green-500/20">
-        <Download size={20} />
-      </button>
     </div>
   );
 }

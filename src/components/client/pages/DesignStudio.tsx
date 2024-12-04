@@ -7,9 +7,9 @@ export default function DesignStudio() {
   const [step, setStep] = useState<'design' | 'shipping'>('design');
 
   return (
-    <div className="h-full flex flex-col">
+    <div className="flex flex-col min-h-screen bg-black">
       {/* Progress Steps */}
-      <div className="mb-6">
+      <div className="p-6 bg-black/30 border-b border-green-500/10">
         <div className="flex items-center justify-center">
           <div className="flex items-center">
             <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
@@ -34,11 +34,11 @@ export default function DesignStudio() {
       </div>
 
       {/* Content */}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-auto p-6">
         {step === 'design' ? (
-          <div className="h-full flex flex-col">
+          <div className="space-y-6">
             <DesignWorkspace />
-            <div className="mt-4 flex justify-end">
+            <div className="flex justify-end">
               <button
                 onClick={() => setStep('shipping')}
                 className="bg-green-500 text-black px-6 py-3 rounded-lg hover:bg-green-400 transition-all flex items-center gap-2"
@@ -49,9 +49,9 @@ export default function DesignStudio() {
             </div>
           </div>
         ) : (
-          <div className="h-full flex flex-col">
+          <div className="space-y-6">
             <ShippingForm />
-            <div className="mt-4 flex justify-between">
+            <div className="flex justify-between">
               <button
                 onClick={() => setStep('design')}
                 className="border border-green-500/20 text-white px-6 py-3 rounded-lg hover:bg-green-500/10 transition-all flex items-center gap-2"
