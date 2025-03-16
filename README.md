@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # B2B Print-On-Demand Platform
 
 A comprehensive business-to-business platform for print-on-demand services, enabling companies to create, manage, and fulfill custom printed products at scale.
@@ -116,3 +117,7 @@ For support and questions, please contact:
 - Enhanced reporting and analytics
 - Mobile application
 - International shipping optimization 
+=======
+# B2B-Print-On-Demand
+Print on demand full stack platform
+>>>>>>> 65e547196fe2c3b48a9f46745b1c113ee5d95591
