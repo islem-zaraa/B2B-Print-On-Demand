@@ -1,11 +1,10 @@
-<<<<<<< HEAD
 # B2B Print-On-Demand Platform
 
-A comprehensive business-to-business platform for print-on-demand services, enabling companies to create, manage, and fulfill custom printed products at scale.
+A comprehensive business-to-business platform for print-on-demand services, enabling companies to create, manage, and fulfill custom printed products at scale with robust security features.
 
 ## Overview
 
-This B2B Print-On-Demand platform provides businesses with a streamlined solution for creating and ordering custom printed products. The platform connects businesses with print providers, automating the entire process from design upload to order fulfillment and shipping.
+This B2B Print-On-Demand platform provides businesses with a streamlined solution for creating and ordering custom printed products. The platform connects businesses with print providers, automating the entire process from design upload to order fulfillment and shipping, while maintaining the highest security standards for data protection.
 
 ## Features
 
@@ -20,6 +19,19 @@ This B2B Print-On-Demand platform provides businesses with a streamlined solutio
 - **API Integration**: Robust API for seamless integration with existing business systems
 - **Automated Fulfillment**: Streamlined production and shipping processes
 
+## Security Features
+
+- **End-to-End Encryption**: All sensitive data is encrypted both in transit and at rest
+- **Role-Based Access Control**: Granular permission system to ensure appropriate access levels
+- **Two-Factor Authentication**: Additional security layer for user accounts
+- **Secure API**: OAuth 2.0 implementation with token-based authentication
+- **Data Privacy Compliance**: GDPR and CCPA compliant data handling
+- **Regular Security Audits**: Automated vulnerability scanning and penetration testing
+- **Secure Payment Processing**: PCI DSS compliant payment integration
+- **IP Restriction**: Optional IP whitelisting for admin access
+- **Audit Logs**: Comprehensive logging of all system activities
+- **Secure File Handling**: Virus scanning for all uploaded files
+
 ## Getting Started
 
 ### Prerequisites
@@ -27,13 +39,13 @@ This B2B Print-On-Demand platform provides businesses with a streamlined solutio
 - Node.js (v14 or higher)
 - MongoDB
 - Redis (for caching and session management)
-- AWS S3 account (for design file storage)
+- AWS S3 account (for secure design file storage)
 
 ### Installation
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/B2B-Print-On-Demand.git
+   git clone https://github.com/islem-zaraa/B2B-Print-On-Demand.git
    cd B2B-Print-On-Demand
    ```
 
@@ -62,13 +74,27 @@ This B2B Print-On-Demand platform provides businesses with a streamlined solutio
 
 The platform is built with a microservices architecture:
 
-- **Frontend**: React.js with Material UI
-- **Backend API**: Node.js with Express
-- **Authentication Service**: JWT-based authentication
-- **Design Service**: Handles design uploads and processing
+- **Frontend**: React.js with Material UI and Content Security Policy
+- **Backend API**: Node.js with Express and robust security middleware
+- **Authentication Service**: JWT-based authentication with refresh token rotation
+- **Design Service**: Handles design uploads and processing with malware scanning
 - **Order Management Service**: Processes and tracks orders
 - **Fulfillment Service**: Connects with print providers
 - **Analytics Service**: Generates reports and insights
+- **Security Service**: Handles threat detection and mitigation
+
+## Security Best Practices
+
+1. **Environment Configuration**: All secrets and credentials are stored in environment variables, never in code
+2. **Input Validation**: All user inputs are validated and sanitized to prevent injection attacks
+3. **Output Encoding**: Data is properly encoded before rendering to prevent XSS
+4. **HTTPS Only**: All communications are encrypted with TLS/SSL
+5. **Content Security Policy**: Strict CSP implementation to prevent XSS attacks
+6. **Security Headers**: Implementation of recommended security headers
+7. **Regular Dependency Updates**: Automated dependency scanning and updates
+8. **Rate Limiting**: Protection against brute force and DDoS attacks
+9. **CSRF Protection**: Token-based protection against cross-site request forgery
+10. **Session Management**: Secure cookie settings and session timeout
 
 ## API Documentation
 
@@ -91,6 +117,10 @@ Deployment guides are available for:
 
 See the `docs/deployment` directory for detailed instructions.
 
+## Security Policy
+
+Please see [SECURITY.md](SECURITY.md) for our security policy and vulnerability reporting process.
+
 ## Contributing
 
 1. Fork the repository
@@ -98,6 +128,8 @@ See the `docs/deployment` directory for detailed instructions.
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+All contributions must follow our security guidelines.
 
 ## License
 
@@ -108,16 +140,14 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 For support and questions, please contact:
 - Email: support@b2bprintondemand.com
 - Documentation: [docs.b2bprintondemand.com](https://docs.b2bprintondemand.com)
-- Issue Tracker: [GitHub Issues](https://github.com/yourusername/B2B-Print-On-Demand/issues)
+- Issue Tracker: [GitHub Issues](https://github.com/islem-zaraa/B2B-Print-On-Demand/issues)
 
 ## Roadmap
 
 - Integration with additional print providers
 - Advanced design customization tools
 - Enhanced reporting and analytics
-- Mobile application
-- International shipping optimization 
-=======
-# B2B-Print-On-Demand
-Print on demand full stack platform
->>>>>>> 65e547196fe2c3b48a9f46745b1c113ee5d95591
+- Mobile application with biometric authentication
+- International shipping optimization
+- Advanced threat detection and prevention systems
+- Blockchain-based design ownership verification
