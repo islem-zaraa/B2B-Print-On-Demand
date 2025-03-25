@@ -1,47 +1,47 @@
-# B2B Print-On-Demand Platform
+# 🎨 B2B Print-On-Demand Platform
 
 A comprehensive business-to-business platform for print-on-demand services, enabling companies to create, manage, and fulfill custom printed products at scale with robust security features.
 
-## Overview
+## 🌟 Overview
 
 This B2B Print-On-Demand platform provides businesses with a streamlined solution for creating and ordering custom printed products. The platform connects businesses with print providers, automating the entire process from design upload to order fulfillment and shipping, while maintaining the highest security standards for data protection.
 
-## Features
+## ✨ Features
 
-- **White-label Solution**: Fully customizable platform that can be branded for your business
-- **Multi-vendor Support**: Connect with multiple print providers through a single integration
-- **Bulk Order Management**: Efficiently handle large volume orders with automated workflows
-- **Design Tools**: Integrated design tools with templates and customization options
-- **Product Catalog**: Extensive catalog of printable products with customization options
-- **Pricing Management**: Flexible pricing models with markup capabilities
-- **Order Tracking**: Real-time order status and tracking information
-- **Reporting & Analytics**: Comprehensive reporting on sales, inventory, and fulfillment
-- **API Integration**: Robust API for seamless integration with existing business systems
-- **Automated Fulfillment**: Streamlined production and shipping processes
-- **Admin Control Panel**: Secure administrative dashboard for platform management
+- **🎯 White-label Solution**: Fully customizable platform that can be branded for your business
+- **🤝 Multi-vendor Support**: Connect with multiple print providers through a single integration
+- **📦 Bulk Order Management**: Efficiently handle large volume orders with automated workflows
+- **🎨 Design Tools**: Integrated design tools with templates and customization options
+- **🛍️ Product Catalog**: Extensive catalog of printable products with customization options
+- **💰 Pricing Management**: Flexible pricing models with markup capabilities
+- **📍 Order Tracking**: Real-time order status and tracking information
+- **📊 Reporting & Analytics**: Comprehensive reporting on sales, inventory, and fulfillment
+- **🔌 API Integration**: Robust API for seamless integration with existing business systems
+- **🚀 Automated Fulfillment**: Streamlined production and shipping processes
+- **⚡ Admin Control Panel**: Secure administrative dashboard for platform management
 
-## Security Features
+## 🔒 Security Features
 
-- **End-to-End Encryption**: All sensitive data is encrypted both in transit and at rest
-- **Role-Based Access Control**: Granular permission system to ensure appropriate access levels
-- **Two-Factor Authentication**: Additional security layer for user accounts
-- **Secure API**: OAuth 2.0 implementation with token-based authentication
-- **Data Privacy Compliance**: GDPR and CCPA compliant data handling
-- **Regular Security Audits**: Automated vulnerability scanning and penetration testing
-- **Secure Payment Processing**: PCI DSS compliant payment integration
-- **IP Restriction**: Optional IP whitelisting for admin access
-- **Audit Logs**: Comprehensive logging of all system activities
-- **Secure File Handling**: Virus scanning for all uploaded files
+- **🔐 End-to-End Encryption**: All sensitive data is encrypted both in transit and at rest
+- **👥 Role-Based Access Control**: Granular permission system to ensure appropriate access levels
+- **🔑 Two-Factor Authentication**: Additional security layer for user accounts
+- **🔒 Secure API**: OAuth 2.0 implementation with token-based authentication
+- **📜 Data Privacy Compliance**: GDPR and CCPA compliant data handling
+- **🛡️ Regular Security Audits**: Automated vulnerability scanning and penetration testing
+- **💳 Secure Payment Processing**: PCI DSS compliant payment integration
+- **🌐 IP Restriction**: Optional IP whitelisting for admin access
+- **📝 Audit Logs**: Comprehensive logging of all system activities
+- **🔍 Secure File Handling**: Virus scanning for all uploaded files
 
-## Getting Started
+## 🚀 Getting Started
 
-### Prerequisites
+### 📋 Prerequisites
 
 - Node.js (v18 or higher)
 - npm (v9 or higher)
 - Supabase account for backend services
 
-### Installation
+### ⚙️ Installation
 
 1. Clone the repository:
    ```bash
@@ -71,33 +71,33 @@ This B2B Print-On-Demand platform provides businesses with a streamlined solutio
    
    The application will be available at http://localhost:5173 (or another port if 5173 is in use)
 
-## Key Routes
+## 🗺️ Key Routes
 
-- **Home**: `/` - Landing page with product information
-- **Admin Dashboard**: `/admin` - Main admin dashboard
-- **Admin Panel**: `/admin/panel` - Control panel for platform administration
-- **User Management**: `/admin/users` - Manage user accounts
-- **Product Management**: `/admin/products` - Manage product catalog
-- **Order Management**: `/admin/orders` - Track and process orders
-- **Client Dashboard**: `/client` - Dashboard for business clients
-- **Demo Dashboard**: `/demo` - Demo features for prospective customers
+- **🏠 Home**: `/` - Landing page with product information
+- **🎛️ Admin Dashboard**: `/admin` - Main admin dashboard
+- **⚙️ Admin Panel**: `/admin/panel` - Control panel for platform administration
+- **👥 User Management**: `/admin/users` - Manage user accounts
+- **📦 Product Management**: `/admin/products` - Manage product catalog
+- **🛍️ Order Management**: `/admin/orders` - Track and process orders
+- **💼 Client Dashboard**: `/client` - Dashboard for business clients
+- **🎮 Demo Dashboard**: `/demo` - Demo features for prospective customers
 
-## Tech Stack
+## 🛠️ Tech Stack
 
-- **Frontend**: 
-  - React 18 with TypeScript
-  - Vite for fast development and building
-  - Tailwind CSS for styling
-  - Tremor for admin dashboard components
-  - React Router for navigation
-  - Zustand for state management
-  - Lucide React for icons
+- **🎨 Frontend**: 
+  - ⚛️ React 18 with TypeScript
+  - ⚡ Vite for fast development and building
+  - 🎯 Tailwind CSS for styling
+  - 📊 Tremor for admin dashboard components
+  - 🔄 React Router for navigation
+  - 🏪 Zustand for state management
+  - 🎯 Lucide React for icons
 
-- **Backend**: 
-  - Supabase for authentication, database, and storage
-  - RESTful API endpoints
+- **🔧 Backend**: 
+  - 🔥 Supabase for authentication, database, and storage
+  - 🔌 RESTful API endpoints
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 B2B-Print-On-Demand/
@@ -124,24 +124,24 @@ B2B-Print-On-Demand/
 └── vite.config.ts     # Vite configuration
 ```
 
-## Development Guidelines
+## 📚 Development Guidelines
 
-### Styling
+### 🎨 Styling
 - Use Tailwind CSS for styling components
 - Follow the dark theme with green accent colors
 - Ensure responsive design for all components
 
-### Component Organization
+### 🏗️ Component Organization
 - Follow a modular approach with reusable components
 - Separate business logic from UI components
 - Use TypeScript for type safety
 
-### State Management
+### 🏪 State Management
 - Use Zustand for global state management
 - Use React Context for theme, auth, and other app-wide states
 - Keep component state local when possible
 
-## Contributing
+## 🤝 Contributing
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/amazing-feature`)
@@ -151,23 +151,23 @@ B2B-Print-On-Demand/
 
 All contributions must follow our security guidelines and coding standards.
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 💬 Support
 
 For support and questions, please contact:
-- Email: support@b2bprintondemand.com
-- Documentation: [docs.b2bprintondemand.com](https://docs.b2bprintondemand.com)
-- Issue Tracker: [GitHub Issues](https://github.com/islem-zaraa/B2B-Print-On-Demand/issues)
+- 📧 Email: support@b2bprintondemand.com
+- 📚 Documentation: [docs.b2bprintondemand.com](https://docs.b2bprintondemand.com)
+- 🐛 Issue Tracker: [GitHub Issues](https://github.com/islem-zaraa/B2B-Print-On-Demand/issues)
 
-## Roadmap
+## 🗺️ Roadmap
 
-- Integration with additional print providers
-- Advanced design customization tools
-- Enhanced reporting and analytics
-- Mobile application with biometric authentication
-- International shipping optimization
-- Advanced threat detection and prevention systems
-- Blockchain-based design ownership verification
+- 🔄 Integration with additional print providers
+- 🎨 Advanced design customization tools
+- 📊 Enhanced reporting and analytics
+- 📱 Mobile application with biometric authentication
+- 🌍 International shipping optimization
+- 🛡️ Advanced threat detection and prevention systems
+- ⛓️ Blockchain-based design ownership verification
