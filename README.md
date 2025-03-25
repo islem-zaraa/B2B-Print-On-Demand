@@ -18,6 +18,7 @@ This B2B Print-On-Demand platform provides businesses with a streamlined solutio
 - **Reporting & Analytics**: Comprehensive reporting on sales, inventory, and fulfillment
 - **API Integration**: Robust API for seamless integration with existing business systems
 - **Automated Fulfillment**: Streamlined production and shipping processes
+- **Admin Control Panel**: Secure administrative dashboard for platform management
 
 ## Security Features
 
@@ -36,10 +37,9 @@ This B2B Print-On-Demand platform provides businesses with a streamlined solutio
 
 ### Prerequisites
 
-- Node.js (v14 or higher)
-- MongoDB
-- Redis (for caching and session management)
-- AWS S3 account (for secure design file storage)
+- Node.js (v18 or higher)
+- npm (v9 or higher)
+- Supabase account for backend services
 
 ### Installation
 
@@ -58,68 +58,88 @@ This B2B Print-On-Demand platform provides businesses with a streamlined solutio
    ```bash
    cp .env.example .env
    ```
-   Edit the `.env` file with your configuration details.
-
-4. Set up the database:
-   ```bash
-   npm run db:setup
+   Edit the `.env` file with your Supabase credentials:
+   ```
+   VITE_SUPABASE_URL=your-supabase-project-url
+   VITE_SUPABASE_ANON_KEY=your-supabase-anon-key
    ```
 
-5. Start the development server:
+4. Start the development server:
    ```bash
    npm run dev
    ```
+   
+   The application will be available at http://localhost:5173 (or another port if 5173 is in use)
 
-## Architecture
+## Key Routes
 
-The platform is built with a microservices architecture:
+- **Home**: `/` - Landing page with product information
+- **Admin Dashboard**: `/admin` - Main admin dashboard
+- **Admin Panel**: `/admin/panel` - Control panel for platform administration
+- **User Management**: `/admin/users` - Manage user accounts
+- **Product Management**: `/admin/products` - Manage product catalog
+- **Order Management**: `/admin/orders` - Track and process orders
+- **Client Dashboard**: `/client` - Dashboard for business clients
+- **Demo Dashboard**: `/demo` - Demo features for prospective customers
 
-- **Frontend**: React.js with Material UI and Content Security Policy
-- **Backend API**: Node.js with Express and robust security middleware
-- **Authentication Service**: JWT-based authentication with refresh token rotation
-- **Design Service**: Handles design uploads and processing with malware scanning
-- **Order Management Service**: Processes and tracks orders
-- **Fulfillment Service**: Connects with print providers
-- **Analytics Service**: Generates reports and insights
-- **Security Service**: Handles threat detection and mitigation
+## Tech Stack
 
-## Security Best Practices
+- **Frontend**: 
+  - React 18 with TypeScript
+  - Vite for fast development and building
+  - Tailwind CSS for styling
+  - Tremor for admin dashboard components
+  - React Router for navigation
+  - Zustand for state management
+  - Lucide React for icons
 
-1. **Environment Configuration**: All secrets and credentials are stored in environment variables, never in code
-2. **Input Validation**: All user inputs are validated and sanitized to prevent injection attacks
-3. **Output Encoding**: Data is properly encoded before rendering to prevent XSS
-4. **HTTPS Only**: All communications are encrypted with TLS/SSL
-5. **Content Security Policy**: Strict CSP implementation to prevent XSS attacks
-6. **Security Headers**: Implementation of recommended security headers
-7. **Regular Dependency Updates**: Automated dependency scanning and updates
-8. **Rate Limiting**: Protection against brute force and DDoS attacks
-9. **CSRF Protection**: Token-based protection against cross-site request forgery
-10. **Session Management**: Secure cookie settings and session timeout
+- **Backend**: 
+  - Supabase for authentication, database, and storage
+  - RESTful API endpoints
 
-## API Documentation
+## Project Structure
 
-Comprehensive API documentation is available at `/api/docs` when running the development server, or in the `docs/api` directory.
-
-## Deployment
-
-### Docker Deployment
-
-```bash
-docker-compose up -d
+```
+B2B-Print-On-Demand/
+├── public/            # Static assets
+├── src/
+│   ├── components/    # React components
+│   │   ├── admin/     # Admin dashboard components
+│   │   ├── auth/      # Authentication components
+│   │   ├── client/    # Client dashboard components
+│   │   └── ...
+│   ├── contexts/      # React contexts (Auth, etc.)
+│   ├── hooks/         # Custom React hooks
+│   ├── lib/           # Utility libraries
+│   ├── stores/        # Zustand stores
+│   ├── types/         # TypeScript type definitions
+│   ├── utils/         # Helper functions
+│   ├── App.tsx        # Main application component
+│   └── main.tsx       # Application entry point
+├── .env.example       # Example environment variables
+├── index.html         # HTML entry point
+├── package.json       # Project dependencies
+├── tailwind.config.js # Tailwind CSS configuration
+├── tsconfig.json      # TypeScript configuration
+└── vite.config.ts     # Vite configuration
 ```
 
-### Cloud Deployment
+## Development Guidelines
 
-Deployment guides are available for:
-- AWS
-- Google Cloud
-- Azure
+### Styling
+- Use Tailwind CSS for styling components
+- Follow the dark theme with green accent colors
+- Ensure responsive design for all components
 
-See the `docs/deployment` directory for detailed instructions.
+### Component Organization
+- Follow a modular approach with reusable components
+- Separate business logic from UI components
+- Use TypeScript for type safety
 
-## Security Policy
-
-Please see [SECURITY.md](SECURITY.md) for our security policy and vulnerability reporting process.
+### State Management
+- Use Zustand for global state management
+- Use React Context for theme, auth, and other app-wide states
+- Keep component state local when possible
 
 ## Contributing
 
@@ -129,7 +149,7 @@ Please see [SECURITY.md](SECURITY.md) for our security policy and vulnerability 
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-All contributions must follow our security guidelines.
+All contributions must follow our security guidelines and coding standards.
 
 ## License
 
