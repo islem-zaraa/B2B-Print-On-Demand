@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
@@ -27,8 +27,23 @@ import CookiePolicy from './components/legal/CookiePolicy';
 import AdminDashboard from './components/admin/Dashboard';
 import ClientDashboard from './components/client/Dashboard';
 import DemoDashboard from './components/demo/DemoDashboard';
+import { AuthProvider } from './contexts/AuthContext';
 
-const ProtectedRoute = ({ children, allowedRoles = [] }) => {
+// Simple mock AuthProvider for demo purposes
+export const MockAuthProvider = ({ children }: { children: ReactNode }) => {
+  return (
+    <AuthProvider>
+      {children}
+    </AuthProvider>
+  );
+};
+
+interface ProtectedRouteProps {
+  children: ReactNode;
+  allowedRoles?: string[];
+}
+
+const ProtectedRoute = ({ children, allowedRoles = [] }: ProtectedRouteProps) => {
   // For demo purposes, always allow access
   return children;
 };
@@ -42,7 +57,9 @@ export default function App() {
           path="/admin/*"
           element={
             <ProtectedRoute allowedRoles={['admin']}>
-              <AdminDashboard />
+              <MockAuthProvider>
+                <AdminDashboard />
+              </MockAuthProvider>
             </ProtectedRoute>
           }
         />

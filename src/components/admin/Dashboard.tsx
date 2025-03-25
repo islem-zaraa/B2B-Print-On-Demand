@@ -9,12 +9,14 @@ import Analytics from './pages/Analytics';
 import Support from './pages/Support';
 import Reports from './pages/Reports';
 import Settings from './pages/Settings';
+import AdminPanel from './pages/AdminPanel';
 
 export default function Dashboard() {
   return (
     <Routes>
       <Route element={<AdminLayout />}>
         <Route index element={<Overview />} />
+        <Route path="panel" element={<AdminPanel />} />
         <Route path="users" element={<Users />} />
         <Route path="products" element={<Products />} />
         <Route path="orders" element={<Orders />} />
