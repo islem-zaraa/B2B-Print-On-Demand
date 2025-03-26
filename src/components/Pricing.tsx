@@ -20,7 +20,7 @@ const plans = [
   },
   {
     name: 'Enterprise',
-    price: '$199',
+    price: 'DZD 199',
     period: '/month',
     description: 'For high-volume businesses with custom needs',
     features: [
