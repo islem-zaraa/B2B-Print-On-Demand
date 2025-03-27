@@ -317,139 +317,209 @@ export default function Invoices() {
               placeholder="Search invoices..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full bg-gray-900 border border-gray-700 text-white rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-green-500"
+              className="w-full bg-gray-900/80 border border-gray-800 text-white rounded-lg pl-10 pr-4 py-2.5 focus:outline-none focus:border-green-500/50 focus:bg-gray-900 focus:ring-1 focus:ring-green-500/30 transition-all shadow-inner"
             />
-            <Search className="absolute left-3 top-2.5 text-gray-500" size={18} />
+            <Search className="absolute left-3 top-3 text-green-500/70" size={18} />
             {searchQuery && (
               <button 
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-2.5 text-gray-500 hover:text-white"
+                className="absolute right-3 top-3 text-gray-500 hover:text-white transition-colors"
               >
-                <X size={18} />
+                <X size={16} />
               </button>
             )}
           </div>
           <button 
-            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
-              showFilterPanel ? 'bg-blue-500 text-white' : 'bg-gray-800 text-white hover:bg-gray-700'
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-lg transition-all shadow-md ml-3 ${
+              showFilterPanel 
+                ? 'bg-gradient-to-r from-blue-600/90 to-green-600/90 text-white border border-blue-500/30' 
+                : 'bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-700 hover:to-gray-800 border border-gray-700/50'
             }`}
             onClick={toggleFilterPanel}
           >
-            <Filter size={18} />
-            Filter
-            <ChevronDown size={16} className={`transform transition-transform ${showFilterPanel ? 'rotate-180' : ''}`} />
+            <Filter size={16} className={showFilterPanel ? 'text-blue-200' : 'text-gray-300'} />
+            <span>Filter</span>
+            <ChevronDown 
+              size={14} 
+              className={`transform transition-transform duration-300 ${showFilterPanel ? 'rotate-180 text-blue-200' : 'text-gray-300'}`} 
+            />
           </button>
         </Flex>
         
-        {/* Filter Panel */}
+        {/* Enhanced Filter Panel */}
         {showFilterPanel && (
-          <div className="mt-4 border-t border-gray-800 pt-4 animate-in slide-in-from-top duration-200">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <Text className="text-gray-400 mb-2 flex items-center gap-1">
-                  <span>Status</span>
-                </Text>
-                <Select 
-                  value={statusFilter} 
-                  onValueChange={setStatusFilter}
-                  className="bg-gray-900 border-gray-700 text-white"
-                >
-                  <SelectItem value="All">All Statuses</SelectItem>
-                  <SelectItem value="Paid">Paid</SelectItem>
-                  <SelectItem value="Pending">Pending</SelectItem>
-                </Select>
-              </div>
+          <div className="mt-5 pt-4 animate-in fade-in-50 slide-in-from-top-5 duration-300">
+            <div className="relative overflow-hidden rounded-xl border border-gray-800/60 bg-gradient-to-b from-gray-900/90 to-black/95 shadow-xl">
+              {/* Background patterns */}
+              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500/20 via-green-500/20 to-blue-500/20"></div>
+              <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:20px_20px] pointer-events-none"></div>
+              <div className="absolute -top-24 -left-24 w-96 h-96 bg-green-500/10 rounded-full blur-3xl opacity-20 pointer-events-none"></div>
+              <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-blue-500/10 rounded-full blur-3xl opacity-20 pointer-events-none"></div>
               
-              <div>
-                <Text className="text-gray-400 mb-2 flex items-center gap-1">
-                  <span>Payment Method</span>
-                </Text>
-                <Select 
-                  value={paymentMethodFilter} 
-                  onValueChange={setPaymentMethodFilter}
-                  className="bg-gray-900 border-gray-700 text-white"
-                >
-                  {paymentMethods.map((method) => (
-                    <SelectItem key={method} value={method}>
-                      {method}
-                    </SelectItem>
-                  ))}
-                </Select>
-              </div>
-              
-              <div>
-                <Text className="text-gray-400 mb-2 flex items-center gap-1">
-                  <CalendarRange size={16} />
-                  <span>Date Range</span>
-                </Text>
-                <DateRangePicker
-                  value={dateRange}
-                  onValueChange={setDateRange}
-                  className="bg-gray-900 border-gray-700 text-white"
-                  enableSelect={true}
-                />
-              </div>
-            </div>
+              <div className="p-6 relative z-10">
+                <div className="flex items-center justify-between mb-6">
+                  <div className="flex items-center gap-2">
+                    <div className="p-1.5 rounded-md bg-gradient-to-r from-blue-500/20 to-green-500/20">
+                      <Filter size={18} className="text-blue-400" />
+                    </div>
+                    <Title className="text-white text-xl">Filter Invoices</Title>
+                  </div>
+                  <button 
+                    onClick={clearFilters}
+                    className="text-xs text-gray-400 hover:text-white transition-colors flex items-center gap-1 bg-gray-800/60 px-2 py-1 rounded-md"
+                  >
+                    <X size={12} />
+                    Reset
+                  </button>
+                </div>
             
-            <Flex justifyContent="end" className="mt-4">
-              <Button 
-                onClick={clearFilters}
-                className="bg-gray-800 text-white hover:bg-gray-700 mr-2"
-              >
-                Clear Filters
-              </Button>
-              <Button 
-                onClick={toggleFilterPanel}
-                className="bg-blue-500 text-white hover:bg-blue-600"
-              >
-                Apply Filters
-              </Button>
-            </Flex>
-            
-            {/* Filter Results Summary */}
-            {(statusFilter !== 'All' || paymentMethodFilter !== 'All' || dateRange?.from || searchQuery) && (
-              <div className="mt-4 pt-4 border-t border-gray-800">
-                <Flex>
-                  <Text className="text-gray-400">
-                    Showing {filteredInvoices.length} of {invoices.length} invoices
-                  </Text>
-                  <div className="flex flex-wrap gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div className="backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-gray-800/60 shadow-lg">
+                    <Text className="text-gray-300 mb-3 flex items-center gap-2">
+                      <span className="p-1 rounded-md bg-green-500/10">
+                        <CheckCircle size={14} className="text-green-400" />
+                      </span>
+                      <span>Status</span>
+                    </Text>
+                    <Select 
+                      value={statusFilter} 
+                      onValueChange={setStatusFilter}
+                      className="bg-gray-900/80 border-gray-800/60 text-white shadow-inner ring-0 ring-offset-0 focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30"
+                    >
+                      <SelectItem value="All">All Statuses</SelectItem>
+                      <SelectItem value="Paid">Paid</SelectItem>
+                      <SelectItem value="Pending">Pending</SelectItem>
+                    </Select>
+                    
                     {statusFilter !== 'All' && (
-                      <Badge className="bg-gray-800 text-white">
-                        Status: {statusFilter}
-                        <button onClick={() => setStatusFilter('All')} className="ml-1 text-gray-400 hover:text-white">
-                          <X size={14} />
+                      <div className="mt-2 flex items-center text-xs">
+                        <Badge className={`${
+                          statusFilter === 'Paid' 
+                            ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
+                            : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                        } py-0.5 px-2`}
+                        >
+                          {statusFilter}
+                        </Badge>
+                        <button 
+                          onClick={() => setStatusFilter('All')} 
+                          className="ml-2 text-gray-500 hover:text-gray-300"
+                        >
+                          <X size={12} />
                         </button>
-                      </Badge>
-                    )}
-                    {paymentMethodFilter !== 'All' && (
-                      <Badge className="bg-gray-800 text-white">
-                        Payment: {paymentMethodFilter}
-                        <button onClick={() => setPaymentMethodFilter('All')} className="ml-1 text-gray-400 hover:text-white">
-                          <X size={14} />
-                        </button>
-                      </Badge>
-                    )}
-                    {dateRange?.from && dateRange?.to && (
-                      <Badge className="bg-gray-800 text-white">
-                        Date: {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
-                        <button onClick={() => setDateRange(undefined)} className="ml-1 text-gray-400 hover:text-white">
-                          <X size={14} />
-                        </button>
-                      </Badge>
-                    )}
-                    {searchQuery && (
-                      <Badge className="bg-gray-800 text-white">
-                        Search: "{searchQuery}"
-                        <button onClick={() => setSearchQuery('')} className="ml-1 text-gray-400 hover:text-white">
-                          <X size={14} />
-                        </button>
-                      </Badge>
+                      </div>
                     )}
                   </div>
-                </Flex>
+                  
+                  <div className="backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-gray-800/60 shadow-lg">
+                    <Text className="text-gray-300 mb-3 flex items-center gap-2">
+                      <span className="p-1 rounded-md bg-blue-500/10">
+                        <CreditCard size={14} className="text-blue-400" />
+                      </span>
+                      <span>Payment Method</span>
+                    </Text>
+                    <Select 
+                      value={paymentMethodFilter} 
+                      onValueChange={setPaymentMethodFilter}
+                      className="bg-gray-900/80 border-gray-800/60 text-white shadow-inner ring-0 ring-offset-0 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30"
+                    >
+                      {paymentMethods.map((method) => (
+                        <SelectItem key={method} value={method}>
+                          {method}
+                        </SelectItem>
+                      ))}
+                    </Select>
+                    
+                    {paymentMethodFilter !== 'All' && (
+                      <div className="mt-2 flex items-center text-xs">
+                        <Badge className="bg-blue-500/20 text-blue-400 border border-blue-500/30 py-0.5 px-2">
+                          {paymentMethodFilter}
+                        </Badge>
+                        <button 
+                          onClick={() => setPaymentMethodFilter('All')} 
+                          className="ml-2 text-gray-500 hover:text-gray-300"
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-gray-800/60 shadow-lg">
+                    <Text className="text-gray-300 mb-3 flex items-center gap-2">
+                      <span className="p-1 rounded-md bg-amber-500/10">
+                        <CalendarRange size={14} className="text-amber-400" />
+                      </span>
+                      <span>Date Range</span>
+                    </Text>
+                    <DateRangePicker
+                      value={dateRange}
+                      onValueChange={setDateRange}
+                      className="bg-gray-900/80 border-gray-800/60 text-white shadow-inner"
+                      enableSelect={true}
+                      selectPlaceholder="Select dates"
+                    />
+                    
+                    {dateRange?.from && dateRange?.to && (
+                      <div className="mt-2 flex items-center text-xs">
+                        <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/30 py-0.5 px-2 truncate max-w-[200px]">
+                          {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
+                        </Badge>
+                        <button 
+                          onClick={() => setDateRange(undefined)} 
+                          className="ml-2 text-gray-500 hover:text-gray-300 flex-shrink-0"
+                        >
+                          <X size={12} />
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </div>
+                
+                {/* Active Filters Summary */}
+                {(statusFilter !== 'All' || paymentMethodFilter !== 'All' || dateRange?.from || searchQuery) && (
+                  <div className="mt-6 pt-4 border-t border-gray-800/40">
+                    <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+                      <div className="flex items-center">
+                        <div className="p-1 rounded-md bg-blue-500/10 mr-2">
+                          <CheckCircle size={14} className="text-blue-400" />
+                        </div>
+                        <Text className="text-gray-300 text-sm">
+                          Showing {filteredInvoices.length} of {invoices.length} invoices
+                        </Text>
+                      </div>
+                      
+                      <div className="flex flex-wrap gap-2 w-full sm:w-auto">
+                        {searchQuery && (
+                          <Badge className="bg-gradient-to-r from-gray-800 to-gray-900 text-gray-300 border border-gray-700/60 py-1 pl-2 pr-1 flex items-center gap-1">
+                            <Search size={10} className="text-green-400 mr-1" />
+                            <span className="truncate max-w-[100px]">"{searchQuery}"</span>
+                            <button onClick={() => setSearchQuery('')} className="ml-1 p-0.5 rounded-full bg-gray-700/50 text-gray-400 hover:text-white hover:bg-gray-600/50">
+                              <X size={10} />
+                            </button>
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
+                <div className="mt-6 flex justify-end gap-3">
+                  <button 
+                    onClick={clearFilters}
+                    className="px-4 py-2 bg-gray-800/80 text-white rounded-lg border border-gray-700/50 hover:bg-gray-700/80 transition-all text-sm shadow-md"
+                  >
+                    Clear All
+                  </button>
+                  <button 
+                    onClick={toggleFilterPanel}
+                    className="px-4 py-2 bg-gradient-to-r from-blue-600/90 to-green-600/90 text-white rounded-lg border border-blue-500/30 hover:from-blue-500/90 hover:to-green-500/90 transition-all text-sm shadow-md"
+                  >
+                    Apply Filters
+                  </button>
+                </div>
               </div>
-            )}
+            </div>
           </div>
         )}
       </Card>
