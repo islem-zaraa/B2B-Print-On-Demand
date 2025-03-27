@@ -57,17 +57,9 @@ export default function Overview() {
             <h1 className="text-3xl font-bold text-white">Welcome back, Client</h1>
             <p className="text-gray-300 mt-1">Your dashboard is up to date as of today</p>
           </div>
-          <button className="bg-green-500 text-black px-4 py-2 rounded-lg hover:bg-green-400 transition-all flex items-center gap-2">
-            New Design
-            <ArrowUpRight size={20} />
-          </button>
         </div>
         
-        <div className="mt-6 grid grid-cols-4 gap-4">
-          <button className="flex items-center gap-2 bg-black/40 hover:bg-black/60 border border-green-500/10 p-3 rounded-xl transition-all">
-            <Upload className="text-green-500" size={18} />
-            <span className="text-white">Quick Upload</span>
-          </button>
+        <div className="mt-6 grid grid-cols-3 gap-4">
           <button className="flex items-center gap-2 bg-black/40 hover:bg-black/60 border border-green-500/10 p-3 rounded-xl transition-all">
             <ShoppingBag className="text-green-500" size={18} />
             <span className="text-white">New Order</span>
@@ -147,24 +139,6 @@ export default function Overview() {
               </div>
             ))}
           </div>
-        </div>
-      </div>
-
-      {/* Upload Quota Tracker */}
-      <div className="backdrop-blur-xl bg-black/30 border border-green-500/10 rounded-2xl p-6">
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-xl font-semibold text-white">Storage Quota</h3>
-          <span className="text-gray-400 text-sm">{uploadQuota.files} files uploaded</span>
-        </div>
-        <div className="w-full bg-gray-800 rounded-full h-2.5 mb-2">
-          <div 
-            className="bg-green-500 h-2.5 rounded-full" 
-            style={{ width: `${(uploadQuota.used / uploadQuota.total) * 100}%` }}
-          ></div>
-        </div>
-        <div className="flex justify-between items-center">
-          <span className="text-gray-400 text-sm">{uploadQuota.used}GB used</span>
-          <span className="text-gray-400 text-sm">{uploadQuota.total}GB total</span>
         </div>
       </div>
       
