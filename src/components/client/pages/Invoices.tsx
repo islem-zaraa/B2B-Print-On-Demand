@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Title, Text, Table, TableRow, TableCell, TableHead, TableHeaderCell, TableBody, Badge, Grid, Flex, DateRangePicker, DateRangePickerValue, Button, Select, SelectItem } from '@tremor/react';
-import { Download, Search, Filter, Eye, FileText, CreditCard, X, Users, Calendar, CalendarClock, Building, Receipt, CheckCircle, ChevronDown, CalendarRange } from 'lucide-react';
+import { Download, Search, Filter, Eye, FileText, CreditCard, X, Users, Calendar, CalendarClock, Building, Receipt, CheckCircle, ChevronDown, CalendarRange, Clock } from 'lucide-react';
 
 // Enhanced sample invoices data with details for the modal
 const invoices = [
@@ -182,6 +182,15 @@ const invoices = [
   },
 ];
 
+// Add predefined date ranges before the component function
+// Predefined date ranges
+const datePresets = [
+  { label: 'Last 30 days', value: '30days' },
+  { label: 'Last 90 days', value: '90days' },
+  { label: 'This year', value: 'year' },
+  { label: 'All time', value: 'all' }
+];
+
 export default function Invoices() {
   const [selectedInvoice, setSelectedInvoice] = useState<typeof invoices[0] | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
@@ -191,6 +200,8 @@ export default function Invoices() {
   const [paymentMethodFilter, setPaymentMethodFilter] = useState<string>('All');
   const [dateRange, setDateRange] = useState<DateRangePickerValue>();
   const [filteredInvoices, setFilteredInvoices] = useState(invoices);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
 
   // Apply filters when any filter changes
   useEffect(() => {
@@ -253,6 +264,49 @@ export default function Invoices() {
 
   // Extract unique payment methods for filter options
   const paymentMethods = ['All', ...Array.from(new Set(invoices.map(invoice => invoice.paymentMethod)))];
+
+  // Add these new functions for date handling
+  const formatDate = (date: Date | undefined) => {
+    if (!date) return '';
+    return date.toLocaleDateString('en-US', { 
+      month: 'short', 
+      day: 'numeric',
+      year: 'numeric'
+    });
+  };
+
+  const handlePresetSelect = (preset: string) => {
+    const now = new Date();
+    let from: Date | undefined;
+    
+    switch (preset) {
+      case '30days':
+        from = new Date(now);
+        from.setDate(now.getDate() - 30);
+        break;
+      case '90days':
+        from = new Date(now);
+        from.setDate(now.getDate() - 90);
+        break;
+      case 'year':
+        from = new Date(now.getFullYear(), 0, 1); // Jan 1 of current year
+        break;
+      case 'all':
+        from = undefined;
+        break;
+      default:
+        from = undefined;
+    }
+    
+    setDateRange({ from, to: preset === 'all' ? undefined : now });
+    setSelectedPreset(preset);
+    setShowDatePicker(false);
+  };
+
+  const handleCustomDateSelect = (value: DateRangePickerValue) => {
+    setDateRange(value);
+    setSelectedPreset(null);
+  };
 
   return (
     <div className="space-y-6">
@@ -482,14 +536,98 @@ export default function Invoices() {
                       <span className="font-medium">Invoice Date Range</span>
                     </Text>
                     
-                    <div className="mt-2">
-                      <DateRangePicker
-                        value={dateRange}
-                        onValueChange={setDateRange}
-                        className="bg-gray-900/80 border-gray-800/60 text-white shadow-inner"
-                        enableSelect={true}
-                        selectPlaceholder="Select date range"
-                      />
+                    <div className="relative mt-2">
+                      <button
+                        onClick={() => setShowDatePicker(!showDatePicker)}
+                        className="w-full bg-gray-900/80 border border-gray-800/60 hover:border-amber-500/50 text-white rounded-lg py-2.5 px-4 flex items-center justify-between transition-colors focus:outline-none focus:border-amber-500/50 shadow-inner"
+                      >
+                        <div className="flex items-center gap-2">
+                          <CalendarRange size={16} className="text-amber-400" />
+                          <span>
+                            {dateRange?.from || dateRange?.to ? (
+                              <>
+                                {formatDate(dateRange.from)} {dateRange.from && dateRange.to && '–'} {formatDate(dateRange.to)}
+                              </>
+                            ) : (
+                              'Select date range'
+                            )}
+                          </span>
+                        </div>
+                        <ChevronDown size={16} className={`text-amber-400/70 transition-transform ${showDatePicker ? 'rotate-180' : ''}`} />
+                      </button>
+                      
+                      {/* Date picker dropdown */}
+                      {showDatePicker && (
+                        <div className="absolute z-20 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl">
+                          <div className="p-4 border-b border-gray-800/60">
+                            <div className="flex items-center justify-between mb-4">
+                              <Text className="text-white font-medium">Select Date Range</Text>
+                              <button 
+                                onClick={() => setShowDatePicker(false)}
+                                className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-800/80"
+                              >
+                                <X size={16} />
+                              </button>
+                            </div>
+                            
+                            {/* Presets */}
+                            <div className="grid grid-cols-2 gap-2 mb-4">
+                              {datePresets.map(preset => (
+                                <button
+                                  key={preset.value}
+                                  onClick={() => handlePresetSelect(preset.value)}
+                                  className={`py-2 px-3 rounded-lg text-sm transition-all ${
+                                    selectedPreset === preset.value
+                                      ? 'bg-gradient-to-r from-amber-500/90 to-amber-600/90 text-white border border-amber-500/30'
+                                      : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 border border-gray-700/50'
+                                  }`}
+                                >
+                                  {preset.label}
+                                </button>
+                              ))}
+                            </div>
+                            
+                            {/* Custom date selection */}
+                            <div className="flex gap-2">
+                              <div className="w-1/2">
+                                <Text className="text-gray-400 text-xs mb-1">Start Date</Text>
+                                <input 
+                                  type="date" 
+                                  className="w-full bg-gray-900/80 border border-gray-800/60 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-amber-500/50 shadow-inner"
+                                  onChange={(e) => handleCustomDateSelect({ ...dateRange, from: e.target.value ? new Date(e.target.value) : undefined })}
+                                  value={dateRange?.from ? dateRange.from.toISOString().split('T')[0] : ''}
+                                />
+                              </div>
+                              <div className="w-1/2">
+                                <Text className="text-gray-400 text-xs mb-1">End Date</Text>
+                                <input 
+                                  type="date" 
+                                  className="w-full bg-gray-900/80 border border-gray-800/60 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-amber-500/50 shadow-inner"
+                                  onChange={(e) => handleCustomDateSelect({ ...dateRange, to: e.target.value ? new Date(e.target.value) : undefined })}
+                                  value={dateRange?.to ? dateRange.to.toISOString().split('T')[0] : ''}
+                                />
+                              </div>
+                            </div>
+                            
+                            <div className="mt-4 flex justify-between">
+                              <button
+                                onClick={() => setDateRange(undefined)}
+                                className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1"
+                              >
+                                <X size={12} />
+                                Clear
+                              </button>
+                              <button
+                                onClick={() => setShowDatePicker(false)}
+                                className="bg-gradient-to-r from-amber-500/90 to-amber-600/90 hover:from-amber-500 hover:to-amber-500 text-white px-4 py-1.5 rounded-lg text-sm transition-colors shadow-md border border-amber-500/30 flex items-center gap-1"
+                              >
+                                <CheckCircle size={12} />
+                                Apply
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     
                     {dateRange?.from && dateRange?.to && (
@@ -497,7 +635,7 @@ export default function Invoices() {
                         <Badge className="bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-amber-400 border border-amber-500/30 shadow-sm py-1 px-3 rounded-full flex items-center gap-1.5">
                           <Calendar size={12} className="text-amber-400" />
                           <span className="truncate max-w-[160px]">
-                            {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
+                            {formatDate(dateRange.from)} – {formatDate(dateRange.to)}
                           </span>
                         </Badge>
                         <button 
