@@ -393,12 +393,12 @@ export default function Invoices() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
           <div className="bg-gradient-to-b from-gray-900 to-black border-0 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
             {/* Gradient border effect */}
-            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-blue-500/40 via-green-500/40 to-blue-500/40 -z-10"></div>
+            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-green-500/40 via-green-500/40 to-green-500/40 -z-10"></div>
             
             <div className="border-b border-gray-800/60 p-4 flex justify-between items-center sticky top-0 bg-gradient-to-r from-black/90 to-gray-900/90 backdrop-blur-sm z-10 rounded-t-2xl">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10">
-                  <Receipt className="text-blue-400 h-6 w-6 drop-shadow-md" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10">
+                  <Receipt className="text-green-400 h-6 w-6 drop-shadow-md" />
                 </div>
                 <div>
                   <Text className="text-gray-400 text-sm">Invoice Details</Text>
@@ -417,20 +417,20 @@ export default function Invoices() {
               {/* Invoice Header */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <Title className="text-white text-3xl mb-4 font-bold">
-                    <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">INVOICE</span>
+                  <Title className="text-green-400 text-3xl mb-4 font-bold">
+                    INVOICE
                   </Title>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <Calendar className="text-blue-400 h-4 w-4" />
+                      <Calendar className="text-green-400 h-4 w-4" />
                       <Text className="text-gray-400">Date: <span className="text-white">{selectedInvoice.date}</span></Text>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CalendarClock className="text-blue-400 h-4 w-4" />
+                      <CalendarClock className="text-green-400 h-4 w-4" />
                       <Text className="text-gray-400">Due Date: <span className="text-white">{selectedInvoice.dueDate}</span></Text>
                     </div>
                     <div className="flex items-center gap-2">
-                      <FileText className="text-blue-400 h-4 w-4" />
+                      <FileText className="text-green-400 h-4 w-4" />
                       <Text className="text-gray-400">Order Reference: <span className="text-white">{selectedInvoice.orderRef}</span></Text>
                     </div>
                   </div>
@@ -458,11 +458,11 @@ export default function Invoices() {
               </div>
               
               {/* Billing Information */}
-              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <Building className="text-blue-400 h-5 w-5" />
+                      <Building className="text-green-400 h-5 w-5" />
                       <Title className="text-white text-base">From</Title>
                     </div>
                     <div className="space-y-1">
@@ -477,7 +477,7 @@ export default function Invoices() {
                   
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <Users className="text-blue-400 h-5 w-5" />
+                      <Users className="text-green-400 h-5 w-5" />
                       <Title className="text-white text-base">Bill To</Title>
                     </div>
                     <div className="space-y-1">
@@ -494,9 +494,9 @@ export default function Invoices() {
               </Card>
               
               {/* Invoice Items */}
-              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
-                <Title className="text-white text-lg mb-4 inline-flex items-center">
-                  <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">Invoice Items</span>
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
+                <Title className="text-green-400 text-lg mb-4 inline-flex items-center">
+                  Invoice Items
                 </Title>
                 <div className="overflow-x-auto">
                   <Table>
@@ -538,7 +538,7 @@ export default function Invoices() {
                     </div>
                     <div className="flex justify-between pt-2">
                       <Text className="text-white font-medium">Total</Text>
-                      <Text className="text-white font-bold text-lg bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
+                      <Text className="text-green-400 font-bold text-lg">
                         {selectedInvoice.details.total}
                       </Text>
                     </div>
@@ -547,7 +547,7 @@ export default function Invoices() {
               </Card>
               
               {/* Notes & Payment Status */}
-              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
                 <Title className="text-white text-lg mb-2">Notes</Title>
                 <Text className="text-gray-400">{selectedInvoice.details.notes}</Text>
                 
@@ -573,7 +573,7 @@ export default function Invoices() {
                   Close
                 </button>
                 <button 
-                  className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white px-8 py-2.5 rounded-lg transition-all shadow-lg hover:shadow-blue-900/30 flex items-center gap-2"
+                  className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white px-8 py-2.5 rounded-lg transition-all shadow-lg hover:shadow-green-900/30 flex items-center gap-2"
                 >
                   <Download size={18} />
                   Download PDF

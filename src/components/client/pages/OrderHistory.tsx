@@ -568,8 +568,8 @@ export default function OrderHistory() {
       {showDetailsModal && selectedOrder && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
           <div className="bg-gradient-to-b from-gray-900 to-black border-0 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
-            {/* Gradient border effect */}
-            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-green-500/40 via-blue-500/40 to-green-500/40 -z-10"></div>
+            {/* Gradient border effect - changed to only green */}
+            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-green-500/40 via-green-500/30 to-green-500/40 -z-10"></div>
             
             <div className="border-b border-gray-800/60 p-4 flex justify-between items-center sticky top-0 bg-gradient-to-r from-black/90 to-gray-900/90 backdrop-blur-sm z-10 rounded-t-2xl">
               <div className="flex items-center gap-3">
@@ -614,10 +614,10 @@ export default function OrderHistory() {
                 </div>
               </Card>
               
-              {/* Customer Details */}
-              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
-                <Title className="text-white text-lg mb-4 inline-flex items-center">
-                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Customer Information</span>
+              {/* Customer Details - changed blue to green */}
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
+                <Title className="text-green-400 text-lg mb-4 inline-flex items-center">
+                  Customer Information
                 </Title>
                 <div className="space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8">
@@ -633,21 +633,21 @@ export default function OrderHistory() {
                   
                   <div className="grid sm:grid-cols-3 gap-4">
                     <div className="flex items-start gap-2">
-                      <Mail className="text-blue-400 h-5 w-5 mt-0.5" />
+                      <Mail className="text-green-400 h-5 w-5 mt-0.5" />
                       <div>
                         <Text className="text-gray-400">Email</Text>
                         <Text className="text-white">{selectedOrder.orderDetails.customer.email}</Text>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <Phone className="text-blue-400 h-5 w-5 mt-0.5" />
+                      <Phone className="text-green-400 h-5 w-5 mt-0.5" />
                       <div>
                         <Text className="text-gray-400">Phone</Text>
                         <Text className="text-white">{selectedOrder.orderDetails.customer.phone}</Text>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <MapPin className="text-blue-400 h-5 w-5 mt-0.5" />
+                      <MapPin className="text-green-400 h-5 w-5 mt-0.5" />
                       <div>
                         <Text className="text-gray-400">Address</Text>
                         <Text className="text-white">{selectedOrder.orderDetails.customer.address}</Text>
@@ -659,8 +659,8 @@ export default function OrderHistory() {
               
               {/* Order Items */}
               <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
-                <Title className="text-white text-lg mb-4 inline-flex items-center">
-                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Order Items</span>
+                <Title className="text-green-400 text-lg mb-4 inline-flex items-center">
+                  Order Items
                 </Title>
                 <div className="overflow-x-auto">
                   <Table>
@@ -696,7 +696,7 @@ export default function OrderHistory() {
                 )}
               </Card>
               
-              {/* Payment and Shipping Details */}
+              {/* Payment and Shipping Details - changed blue to green */}
               <div className="grid md:grid-cols-2 gap-6">
                 <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.02] hover:shadow-green-900/20 hover:border-green-500/30">
                   <div className="flex items-center gap-3 mb-4">
@@ -723,10 +723,10 @@ export default function OrderHistory() {
                   </div>
                 </Card>
                 
-                <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.02] hover:shadow-blue-900/20 hover:border-blue-500/30">
+                <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.02] hover:shadow-green-900/20 hover:border-green-500/30">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/10">
-                      <ShoppingBag className="text-blue-400 h-5 w-5 drop-shadow-md" />
+                    <div className="p-2 rounded-full bg-gradient-to-br from-green-500/20 to-green-500/10">
+                      <ShoppingBag className="text-green-400 h-5 w-5 drop-shadow-md" />
                     </div>
                     <Title className="text-white text-lg">Shipping Details</Title>
                   </div>

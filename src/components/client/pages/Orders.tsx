@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Title, Text, Table, TableRow, TableCell, TableHead, TableHeaderCell, TableBody, Badge, Grid, Flex } from '@tremor/react';
-import { Package, Truck, CheckCircle, X, MapPin, Phone, Mail, CreditCard, Box, ExternalLink, Copy, Calendar } from 'lucide-react';
+import { Package, Truck, CheckCircle, X, MapPin, Phone, Mail, CreditCard, Box, ExternalLink, Copy, Calendar, ShoppingBag, Building, User, CalendarCheck } from 'lucide-react';
 
 // Enhanced sample data for orders with more details
 const orders = [
@@ -275,12 +275,12 @@ export default function Orders() {
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
           <div className="bg-gradient-to-b from-gray-900 to-black border-0 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
             {/* Gradient border effect */}
-            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-green-500/40 via-blue-500/40 to-green-500/40 -z-10"></div>
+            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-green-500/40 via-green-500/30 to-green-500/40 -z-10"></div>
             
             <div className="border-b border-gray-800/60 p-4 flex justify-between items-center sticky top-0 bg-gradient-to-r from-black/90 to-gray-900/90 backdrop-blur-sm z-10 rounded-t-2xl">
               <div className="flex items-center gap-3">
                 <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10">
-                  <Box className="text-green-400 h-6 w-6 drop-shadow-md" />
+                  <ShoppingBag className="text-green-400 h-6 w-6 drop-shadow-md" />
                 </div>
                 <div>
                   <Text className="text-gray-400 text-sm">Order Details</Text>
@@ -296,111 +296,126 @@ export default function Orders() {
             </div>
             
             <div className="p-8 space-y-8">
-              {/* Order Status */}
-              <div className="flex items-center gap-4">
-                <Badge
-                  color={selectedOrder.statusColor as 'green' | 'amber' | 'blue'}
-                  className={`px-4 py-1.5 shadow-md border ${
-                    selectedOrder.status === 'In Production'
-                      ? 'bg-gradient-to-r from-blue-500/30 to-blue-600/30 text-blue-400 border-blue-500/20' 
-                      : selectedOrder.status === 'Shipped'
-                      ? 'bg-gradient-to-r from-amber-500/30 to-amber-600/30 text-amber-400 border-amber-500/20' 
+              {/* Order Summary */}
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
+                <div className="flex md:flex-row flex-col justify-between md:items-center gap-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex flex-col">
+                      <Text className="text-gray-400">Date</Text>
+                      <Text className="text-white font-medium">{selectedOrder.date}</Text>
+                    </div>
+                    <div className="flex flex-col">
+                      <Text className="text-gray-400">Amount</Text>
+                      <Text className="text-white font-medium">{selectedOrder.total}</Text>
+                    </div>
+                  </div>
+                  <Badge
+                    size="lg"
+                    color={selectedOrder.statusColor as 'green' | 'amber' | 'blue'}
+                    className={`${
+                      selectedOrder.statusColor === 'blue' 
+                      ? 'bg-gradient-to-r from-green-500/30 to-green-600/30 text-green-400 border-green-500/20'
+                      : selectedOrder.statusColor === 'amber'
+                      ? 'bg-gradient-to-r from-amber-500/30 to-amber-600/30 text-amber-400 border-amber-500/20'
                       : 'bg-gradient-to-r from-green-500/30 to-green-600/30 text-green-400 border-green-500/20'
-                  }`}
-                  size="lg"
-                >
-                  <div className="flex items-center gap-2">
-                    {selectedOrder.status === 'In Production' && <Package size={16} className="drop-shadow-md" />}
-                    {selectedOrder.status === 'Shipped' && <Truck size={16} className="drop-shadow-md" />}
-                    {selectedOrder.status === 'Delivered' && <CheckCircle size={16} className="drop-shadow-md" />}
-                    <span className="font-medium">{selectedOrder.status}</span>
-                  </div>
-                </Badge>
-                <div className="flex items-center gap-2 text-gray-400 bg-black/40 px-3 py-1.5 rounded-lg shadow-inner">
-                  <Calendar size={16} className="text-blue-400" />
-                  <span>Ordered on {selectedOrder.date}</span>
+                    } text-base px-6 py-1.5 shadow-md border`}
+                  >
+                    {selectedOrder.status}
+                  </Badge>
                 </div>
-              </div>
+              </Card>
               
-              <Grid numItems={1} numItemsMd={2} className="gap-6">
-                {/* Customer Information */}
-                <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
-                  <Title className="text-white text-lg mb-4 inline-flex items-center">
-                    <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Customer Information</span>
-                  </Title>
+              {/* Customer Information */}
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
+                <Title className="text-green-400 text-lg mb-4 inline-flex items-center">
+                  Customer Information
+                </Title>
+                <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10 text-blue-400 mt-0.5">
-                        <MapPin size={16} className="drop-shadow-md" />
-                      </div>
-                      <div>
-                        <Text className="text-white font-medium">{selectedOrder.orderDetails.customer.name}</Text>
-                        <Text className="text-gray-400">{selectedOrder.orderDetails.customer.contactName}</Text>
-                        <Text className="text-gray-400 text-sm mt-1">{selectedOrder.orderDetails.customer.address}</Text>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10 text-blue-400">
-                        <Phone size={16} className="drop-shadow-md" />
-                      </div>
-                      <Text className="text-gray-400">{selectedOrder.orderDetails.customer.phone}</Text>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10 text-blue-400">
-                        <Mail size={16} className="drop-shadow-md" />
-                      </div>
-                      <Text className="text-gray-400">{selectedOrder.orderDetails.customer.email}</Text>
-                    </div>
-                  </div>
-                </Card>
-                
-                {/* Payment & Shipping */}
-                <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
-                  <Title className="text-white text-lg mb-4 inline-flex items-center">
-                    <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Payment & Delivery</span>
-                  </Title>
-                  <div className="space-y-4">
-                    <div className="flex items-start gap-3">
+                    <div className="flex items-start gap-2">
                       <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10 text-green-400 mt-0.5">
-                        <CreditCard size={16} className="drop-shadow-md" />
+                        <Building size={16} />
                       </div>
                       <div>
-                        <Text className="text-white font-medium">Payment</Text>
-                        <div className="flex items-center gap-2 mt-1">
-                          <Text className="text-gray-400 text-sm">{selectedOrder.orderDetails.payment.method}</Text>
-                          <Badge color="green" className="bg-green-500/20 text-green-400 border border-green-500/10 shadow-sm">
-                            {selectedOrder.orderDetails.payment.status}
-                          </Badge>
-                        </div>
-                        <Text className="text-gray-400 text-sm mt-1">Paid on {selectedOrder.orderDetails.payment.date}</Text>
+                        <Text className="text-gray-400">Company</Text>
+                        <Text className="text-white font-medium">{selectedOrder.orderDetails.customer.name}</Text>
                       </div>
                     </div>
-                    <div className="flex items-start gap-3">
-                      <div className="p-2 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-500/10 text-amber-400 mt-0.5">
-                        <Truck size={16} className="drop-shadow-md" />
+                    <div className="flex items-start gap-2">
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10 text-green-400">
+                        <User size={16} />
                       </div>
                       <div>
-                        <Text className="text-white font-medium">Shipping</Text>
-                        <Text className="text-gray-400 text-sm mt-1">{selectedOrder.orderDetails.shipping.method}</Text>
-                        {selectedOrder.status === 'Delivered' && selectedOrder.orderDetails.shipping.deliveredDate && (
-                          <Text className="text-green-400 text-sm mt-1 flex items-center gap-1">
-                            <CheckCircle size={14} />
-                            Delivered on {selectedOrder.orderDetails.shipping.deliveredDate}
-                          </Text>
-                        )}
-                        {selectedOrder.status !== 'Delivered' && (
-                          <Text className="text-gray-400 text-sm mt-1">Estimated delivery: {selectedOrder.orderDetails.shipping.estimatedDelivery}</Text>
-                        )}
+                        <Text className="text-gray-400">Contact</Text>
+                        <Text className="text-white font-medium">{selectedOrder.orderDetails.customer.contactName}</Text>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10 text-green-400">
+                        <Mail size={16} />
+                      </div>
+                      <div>
+                        <Text className="text-gray-400">Email</Text>
+                        <Text className="text-white font-medium">{selectedOrder.orderDetails.customer.email}</Text>
                       </div>
                     </div>
                   </div>
-                </Card>
-              </Grid>
+                </div>
+              </Card>
+              
+              {/* Payment & Delivery */}
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
+                <Title className="text-green-400 text-lg mb-4 inline-flex items-center">
+                  Payment & Delivery
+                </Title>
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-2">
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10 text-green-400 mt-0.5">
+                        <CreditCard size={16} />
+                      </div>
+                      <div>
+                        <Text className="text-gray-400">Payment Method</Text>
+                        <Text className="text-white font-medium">{selectedOrder.orderDetails.payment.method}</Text>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10 text-green-400 mt-0.5">
+                        <Calendar size={16} />
+                      </div>
+                      <div>
+                        <Text className="text-gray-400">Payment Date</Text>
+                        <Text className="text-white font-medium">{selectedOrder.orderDetails.payment.date}</Text>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="space-y-3">
+                    <div className="flex items-start gap-2">
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10 text-green-400 mt-0.5">
+                        <Truck size={16} />
+                      </div>
+                      <div>
+                        <Text className="text-gray-400">Shipping Method</Text>
+                        <Text className="text-white font-medium">{selectedOrder.orderDetails.shipping.method}</Text>
+                      </div>
+                    </div>
+                    <div className="flex items-start gap-2">
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10 text-green-400 mt-0.5">
+                        <CalendarCheck size={16} />
+                      </div>
+                      <div>
+                        <Text className="text-gray-400">Expected Delivery</Text>
+                        <Text className="text-white font-medium">{selectedOrder.orderDetails.shipping.estimatedDelivery}</Text>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Card>
               
               {/* Products */}
-              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
-                <Title className="text-white text-lg mb-4 inline-flex items-center">
-                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Products</span>
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
+                <Title className="text-green-400 text-lg mb-4 inline-flex items-center">
+                  Products
                 </Title>
                 <div className="overflow-x-auto">
                   <Table>
@@ -415,8 +430,8 @@ export default function Orders() {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {selectedOrder.orderDetails.products.map((product, i) => (
-                        <TableRow key={i} className="border-b border-gray-800/60 hover:bg-gray-900/40 transition-colors">
+                      {selectedOrder.orderDetails.products.map((product, index) => (
+                        <TableRow key={index} className="border-b border-gray-800/60">
                           <TableCell className="text-white font-medium">{product.name}</TableCell>
                           <TableCell className="text-white">{product.quantity}</TableCell>
                           <TableCell className="text-white">{product.color}</TableCell>
@@ -428,12 +443,6 @@ export default function Orders() {
                     </TableBody>
                   </Table>
                 </div>
-                {selectedOrder.orderDetails.notes && (
-                  <div className="mt-4 bg-gray-900/40 p-3 rounded-lg">
-                    <Text className="text-white font-medium">Order Notes:</Text>
-                    <Text className="text-gray-400 mt-1">{selectedOrder.orderDetails.notes}</Text>
-                  </div>
-                )}
               </Card>
               
               <Flex justifyContent="end">
@@ -449,17 +458,17 @@ export default function Orders() {
         </div>
       )}
       
-      {/* Tracking Modal */}
+      {/* Tracking Information Modal */}
       {showTrackingModal && selectedOrder && selectedOrder.orderDetails.tracking && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
           <div className="bg-gradient-to-b from-gray-900 to-black border-0 rounded-2xl shadow-2xl w-full max-w-lg relative">
             {/* Gradient border effect */}
-            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-blue-500/40 via-amber-500/40 to-blue-500/40 -z-10"></div>
+            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-green-500/40 via-green-500/30 to-green-500/40 -z-10"></div>
             
             <div className="border-b border-gray-800/60 p-4 flex justify-between items-center bg-gradient-to-r from-black/90 to-gray-900/90 backdrop-blur-sm rounded-t-2xl">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10">
-                  <Truck className="text-blue-400 h-6 w-6 drop-shadow-md" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10">
+                  <Truck className="text-green-400 h-6 w-6 drop-shadow-md" />
                 </div>
                 <div>
                   <Text className="text-gray-400 text-sm">Tracking Information</Text>
@@ -474,75 +483,67 @@ export default function Orders() {
               </button>
             </div>
             
-            {selectedOrder.orderDetails.tracking && (
-              <div className="p-6 space-y-6">
-                <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
-                  <div className="flex justify-between items-start mb-4">
-                    <div>
-                      <Text className="text-gray-400">Carrier</Text>
-                      <Title className="text-white text-xl">{selectedOrder.orderDetails.tracking?.carrier}</Title>
+            <div className="p-6 space-y-6">
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
+                <div className="flex items-center justify-between mb-4">
+                  <Badge
+                    size="lg"
+                    color={selectedOrder.statusColor as 'green' | 'amber' | 'blue'}
+                    className="bg-gradient-to-r from-green-500/30 to-green-600/30 text-green-400 text-sm px-4 py-1 shadow-md border border-green-500/20"
+                  >
+                    {selectedOrder.status}
+                  </Badge>
+                  <Text className="text-white font-medium">{selectedOrder.orderDetails.tracking.carrier}</Text>
+                </div>
+                
+                <div className="space-y-4">
+                  <div>
+                    <Text className="text-gray-400">Tracking Number</Text>
+                    <div className="flex items-center gap-2 mt-1">
+                      <code className="bg-gray-900/80 px-3 py-1.5 rounded-lg text-white shadow-inner border border-gray-800/60">{selectedOrder.orderDetails.tracking?.number}</code>
+                      <button 
+                        onClick={() => selectedOrder.orderDetails.tracking?.number && copyToClipboard(selectedOrder.orderDetails.tracking.number)}
+                        className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800/80 transition-all"
+                        title="Copy to clipboard"
+                      >
+                        <Copy size={16} />
+                      </button>
                     </div>
-                    <Badge
-                      color={selectedOrder.statusColor as 'green' | 'amber' | 'blue'}
-                      className={`${
-                        selectedOrder.status === 'Shipped'
-                          ? 'bg-gradient-to-r from-amber-500/30 to-amber-600/30 text-amber-400 border border-amber-500/20 shadow-md px-3 py-1' 
-                          : 'bg-gradient-to-r from-green-500/30 to-green-600/30 text-green-400 border border-green-500/20 shadow-md px-3 py-1'
-                      }`}
-                    >
-                      {selectedOrder.status}
-                    </Badge>
                   </div>
                   
-                  <div className="space-y-4">
-                    <div>
-                      <Text className="text-gray-400">Tracking Number</Text>
-                      <div className="flex items-center gap-2 mt-1">
-                        <code className="bg-gray-900/80 px-3 py-1.5 rounded-lg text-white shadow-inner border border-gray-800/60">{selectedOrder.orderDetails.tracking?.number}</code>
-                        <button 
-                          onClick={() => selectedOrder.orderDetails.tracking?.number && copyToClipboard(selectedOrder.orderDetails.tracking.number)}
-                          className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800/80 transition-all"
-                          title="Copy to clipboard"
-                        >
-                          <Copy size={16} />
-                        </button>
-                      </div>
-                    </div>
-                    
-                    <div>
-                      <Text className="text-gray-400">Last Update</Text>
-                      <Text className="text-white mt-1 bg-gray-900/40 px-3 py-2 rounded-lg">{selectedOrder.orderDetails.tracking?.lastUpdate}</Text>
-                    </div>
-                    
-                    <div className="pt-2">
-                      <Text className="text-gray-400">Tracking Instructions</Text>
-                      <Text className="text-white mt-1 bg-gray-900/40 px-3 py-2 rounded-lg">{selectedOrder.orderDetails.tracking?.instructions}</Text>
-                    </div>
+                  <div>
+                    <Text className="text-gray-400">Last Update</Text>
+                    <Text className="text-white mt-1 bg-gray-900/40 px-3 py-2 rounded-lg">{selectedOrder.orderDetails.tracking?.lastUpdate}</Text>
                   </div>
-                </Card>
-                
-                <Card className="bg-black/60 border border-blue-800/30 rounded-xl shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/40">
-                  <a 
-                    href={selectedOrder.orderDetails.tracking?.url} 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 py-3 text-blue-400 hover:text-blue-300 transition-colors"
-                  >
-                    <ExternalLink size={18} />
-                    <span>Track on {selectedOrder.orderDetails.tracking?.carrier} Website</span>
-                  </a>
-                </Card>
-                
-                <Flex justifyContent="end">
-                  <button 
-                    onClick={closeModals}
-                    className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white px-8 py-2.5 rounded-lg transition-all shadow-lg hover:shadow-gray-900/30"
-                  >
-                    Close
-                  </button>
-                </Flex>
-              </div>
-            )}
+                  
+                  <div className="pt-2">
+                    <Text className="text-gray-400">Tracking Instructions</Text>
+                    <Text className="text-white mt-1 bg-gray-900/40 px-3 py-2 rounded-lg">{selectedOrder.orderDetails.tracking?.instructions}</Text>
+                  </div>
+                </div>
+              </Card>
+              
+              <Card className="bg-black/60 border border-green-800/30 rounded-xl shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/40">
+                <a 
+                  href={selectedOrder.orderDetails.tracking?.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 py-3 text-green-400 hover:text-green-300 transition-colors"
+                >
+                  <ExternalLink size={18} />
+                  <span>Track on {selectedOrder.orderDetails.tracking?.carrier} Website</span>
+                </a>
+              </Card>
+              
+              <Flex justifyContent="end">
+                <button 
+                  onClick={closeModals}
+                  className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white px-8 py-2.5 rounded-lg transition-all shadow-lg hover:shadow-gray-900/30"
+                >
+                  Close
+                </button>
+              </Flex>
+            </div>
           </div>
         </div>
       )}
