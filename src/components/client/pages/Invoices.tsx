@@ -324,42 +324,47 @@ export default function Invoices() {
 
       {/* Invoice Details Modal */}
       {showDetailsModal && selectedInvoice && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-black border border-gray-800 rounded-xl shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div className="border-b border-gray-800 p-4 flex justify-between items-center sticky top-0 bg-black">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
+          <div className="bg-gradient-to-b from-gray-900 to-black border-0 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+            {/* Gradient border effect */}
+            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-blue-500/40 via-green-500/40 to-blue-500/40 -z-10"></div>
+            
+            <div className="border-b border-gray-800/60 p-4 flex justify-between items-center sticky top-0 bg-gradient-to-r from-black/90 to-gray-900/90 backdrop-blur-sm z-10 rounded-t-2xl">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-blue-500/10">
-                  <Receipt className="text-blue-500 h-6 w-6" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10">
+                  <Receipt className="text-blue-400 h-6 w-6 drop-shadow-md" />
                 </div>
                 <div>
                   <Text className="text-gray-400 text-sm">Invoice Details</Text>
-                  <Title className="text-white">{selectedInvoice.id}</Title>
+                  <Title className="text-white text-xl drop-shadow-md">{selectedInvoice.id}</Title>
                 </div>
               </div>
               <button 
                 onClick={closeModal} 
-                className="p-2 text-gray-400 hover:text-white transition-colors"
+                className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800/80 transition-all"
               >
                 <X size={20} />
               </button>
             </div>
             
-            <div className="p-6 space-y-6">
+            <div className="p-8 space-y-8">
               {/* Invoice Header */}
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
-                  <Title className="text-white text-2xl mb-2">INVOICE</Title>
-                  <div className="space-y-1">
+                  <Title className="text-white text-3xl mb-4 font-bold">
+                    <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">INVOICE</span>
+                  </Title>
+                  <div className="space-y-2">
                     <div className="flex items-center gap-2">
-                      <Calendar className="text-gray-400 h-4 w-4" />
+                      <Calendar className="text-blue-400 h-4 w-4" />
                       <Text className="text-gray-400">Date: <span className="text-white">{selectedInvoice.date}</span></Text>
                     </div>
                     <div className="flex items-center gap-2">
-                      <CalendarClock className="text-gray-400 h-4 w-4" />
+                      <CalendarClock className="text-blue-400 h-4 w-4" />
                       <Text className="text-gray-400">Due Date: <span className="text-white">{selectedInvoice.dueDate}</span></Text>
                     </div>
                     <div className="flex items-center gap-2">
-                      <FileText className="text-gray-400 h-4 w-4" />
+                      <FileText className="text-blue-400 h-4 w-4" />
                       <Text className="text-gray-400">Order Reference: <span className="text-white">{selectedInvoice.orderRef}</span></Text>
                     </div>
                   </div>
@@ -372,8 +377,8 @@ export default function Invoices() {
                       color={selectedInvoice.status === 'Paid' ? 'green' : 'amber'}
                       className={`${
                         selectedInvoice.status === 'Paid' 
-                          ? 'bg-green-500/20 text-green-500 text-base px-6 py-1' 
-                          : 'bg-amber-500/20 text-amber-500 text-base px-6 py-1'
+                          ? 'bg-gradient-to-r from-green-500/30 to-green-600/30 text-green-400 text-base px-6 py-1.5 shadow-md border border-green-500/20' 
+                          : 'bg-gradient-to-r from-amber-500/30 to-amber-600/30 text-amber-400 text-base px-6 py-1.5 shadow-md border border-amber-500/20'
                       }`}
                     >
                       {selectedInvoice.status}
@@ -387,11 +392,11 @@ export default function Invoices() {
               </div>
               
               {/* Billing Information */}
-              <Card className="bg-black border border-gray-800 rounded-xl p-4">
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <Building className="text-gray-400 h-5 w-5" />
+                      <Building className="text-blue-400 h-5 w-5" />
                       <Title className="text-white text-base">From</Title>
                     </div>
                     <div className="space-y-1">
@@ -407,7 +412,7 @@ export default function Invoices() {
                   
                   <div>
                     <div className="flex items-center gap-2 mb-3">
-                      <Users className="text-gray-400 h-5 w-5" />
+                      <Users className="text-blue-400 h-5 w-5" />
                       <Title className="text-white text-base">Bill To</Title>
                     </div>
                     <div className="space-y-1">
@@ -424,12 +429,14 @@ export default function Invoices() {
               </Card>
               
               {/* Invoice Items */}
-              <Card className="bg-black border border-gray-800 rounded-xl p-4">
-                <Title className="text-white text-lg mb-4">Invoice Items</Title>
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
+                <Title className="text-white text-lg mb-4 inline-flex items-center">
+                  <span className="bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">Invoice Items</span>
+                </Title>
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHead>
-                      <TableRow className="border-b border-gray-800">
+                      <TableRow className="border-b border-gray-800/60">
                         <TableHeaderCell className="text-gray-400">Description</TableHeaderCell>
                         <TableHeaderCell className="text-gray-400 text-right">Quantity</TableHeaderCell>
                         <TableHeaderCell className="text-gray-400 text-right">Unit Price</TableHeaderCell>
@@ -438,7 +445,7 @@ export default function Invoices() {
                     </TableHead>
                     <TableBody>
                       {selectedInvoice.details.items.map((item, i) => (
-                        <TableRow key={i} className="border-b border-gray-800">
+                        <TableRow key={i} className="border-b border-gray-800/60 hover:bg-gray-900/40 transition-colors">
                           <TableCell className="text-white">{item.description}</TableCell>
                           <TableCell className="text-white text-right">{item.quantity}</TableCell>
                           <TableCell className="text-white text-right">{item.unitPrice}</TableCell>
@@ -451,39 +458,41 @@ export default function Invoices() {
                 
                 {/* Invoice Totals */}
                 <div className="mt-6 flex justify-end">
-                  <div className="w-full md:w-64 space-y-2">
-                    <div className="flex justify-between border-b border-gray-800 pb-2">
+                  <div className="w-full md:w-64 space-y-2 bg-gray-900/40 rounded-lg p-4 shadow-inner">
+                    <div className="flex justify-between border-b border-gray-800/60 pb-2">
                       <Text className="text-gray-400">Subtotal</Text>
                       <Text className="text-white">{selectedInvoice.details.subtotal}</Text>
                     </div>
-                    <div className="flex justify-between border-b border-gray-800 pb-2">
+                    <div className="flex justify-between border-b border-gray-800/60 pb-2">
                       <Text className="text-gray-400">Tax</Text>
                       <Text className="text-white">{selectedInvoice.details.tax}</Text>
                     </div>
-                    <div className="flex justify-between border-b border-gray-800 pb-2">
+                    <div className="flex justify-between border-b border-gray-800/60 pb-2">
                       <Text className="text-gray-400">Discount</Text>
                       <Text className="text-white">{selectedInvoice.details.discount}</Text>
                     </div>
                     <div className="flex justify-between pt-2">
                       <Text className="text-white font-medium">Total</Text>
-                      <Text className="text-white font-bold text-lg">{selectedInvoice.details.total}</Text>
+                      <Text className="text-white font-bold text-lg bg-gradient-to-r from-blue-400 to-green-400 bg-clip-text text-transparent">
+                        {selectedInvoice.details.total}
+                      </Text>
                     </div>
                   </div>
                 </div>
               </Card>
               
               {/* Notes & Payment Status */}
-              <Card className="bg-black border border-gray-800 rounded-xl p-4">
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
                 <Title className="text-white text-lg mb-2">Notes</Title>
                 <Text className="text-gray-400">{selectedInvoice.details.notes}</Text>
                 
                 {selectedInvoice.status === 'Paid' && (
-                  <div className="mt-4 border-t border-gray-800 pt-4">
-                    <div className="flex items-center gap-2">
-                      <div className="p-1 rounded-full bg-green-500/20">
-                        <CheckCircle className="h-4 w-4 text-green-500" />
+                  <div className="mt-4 border-t border-gray-800/60 pt-4">
+                    <div className="flex items-center gap-2 bg-green-500/10 p-2 rounded-lg">
+                      <div className="p-1 rounded-full bg-gradient-to-br from-green-500/30 to-green-500/20">
+                        <CheckCircle className="h-4 w-4 text-green-400" />
                       </div>
-                      <Text className="text-green-500">
+                      <Text className="text-green-400">
                         Payment received on {selectedInvoice.details.paidDate}
                       </Text>
                     </div>
@@ -494,12 +503,12 @@ export default function Invoices() {
               <Flex justifyContent="end" className="gap-3">
                 <button 
                   onClick={closeModal}
-                  className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-all"
+                  className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white px-8 py-2.5 rounded-lg transition-all shadow-lg hover:shadow-gray-900/30"
                 >
                   Close
                 </button>
                 <button 
-                  className="bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-all flex items-center gap-2"
+                  className="bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 text-white px-8 py-2.5 rounded-lg transition-all shadow-lg hover:shadow-blue-900/30 flex items-center gap-2"
                 >
                   <Download size={18} />
                   Download PDF

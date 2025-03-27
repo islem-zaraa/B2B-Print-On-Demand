@@ -272,61 +272,66 @@ export default function Orders() {
 
       {/* Order Details Modal */}
       {showDetailsModal && selectedOrder && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-black border border-gray-800 rounded-xl shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div className="sticky top-0 bg-black border-b border-gray-800 p-4 flex justify-between items-center">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
+          <div className="bg-gradient-to-b from-gray-900 to-black border-0 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+            {/* Gradient border effect */}
+            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-green-500/40 via-blue-500/40 to-green-500/40 -z-10"></div>
+            
+            <div className="border-b border-gray-800/60 p-4 flex justify-between items-center sticky top-0 bg-gradient-to-r from-black/90 to-gray-900/90 backdrop-blur-sm z-10 rounded-t-2xl">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-green-500/10">
-                  <Box className="text-green-500 h-6 w-6" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10">
+                  <Box className="text-green-400 h-6 w-6 drop-shadow-md" />
                 </div>
                 <div>
                   <Text className="text-gray-400 text-sm">Order Details</Text>
-                  <Title className="text-white">{selectedOrder.id}</Title>
+                  <Title className="text-white text-xl drop-shadow-md">{selectedOrder.id}</Title>
                 </div>
               </div>
               <button 
                 onClick={closeModals} 
-                className="p-2 text-gray-400 hover:text-white transition-colors"
+                className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800/80 transition-all"
               >
                 <X size={20} />
               </button>
             </div>
             
-            <div className="p-6 space-y-6">
+            <div className="p-8 space-y-8">
               {/* Order Status */}
               <div className="flex items-center gap-4">
                 <Badge
                   color={selectedOrder.statusColor as 'green' | 'amber' | 'blue'}
-                  className={`px-3 py-1 ${
+                  className={`px-4 py-1.5 shadow-md border ${
                     selectedOrder.status === 'In Production'
-                      ? 'bg-blue-500/20 text-blue-500'
+                      ? 'bg-gradient-to-r from-blue-500/30 to-blue-600/30 text-blue-400 border-blue-500/20' 
                       : selectedOrder.status === 'Shipped'
-                      ? 'bg-amber-500/20 text-amber-500' 
-                      : 'bg-green-500/20 text-green-500'
+                      ? 'bg-gradient-to-r from-amber-500/30 to-amber-600/30 text-amber-400 border-amber-500/20' 
+                      : 'bg-gradient-to-r from-green-500/30 to-green-600/30 text-green-400 border-green-500/20'
                   }`}
                   size="lg"
                 >
                   <div className="flex items-center gap-2">
-                    {selectedOrder.status === 'In Production' && <Package size={16} />}
-                    {selectedOrder.status === 'Shipped' && <Truck size={16} />}
-                    {selectedOrder.status === 'Delivered' && <CheckCircle size={16} />}
+                    {selectedOrder.status === 'In Production' && <Package size={16} className="drop-shadow-md" />}
+                    {selectedOrder.status === 'Shipped' && <Truck size={16} className="drop-shadow-md" />}
+                    {selectedOrder.status === 'Delivered' && <CheckCircle size={16} className="drop-shadow-md" />}
                     <span className="font-medium">{selectedOrder.status}</span>
                   </div>
                 </Badge>
-                <div className="flex items-center gap-2 text-gray-400">
-                  <Calendar size={16} />
+                <div className="flex items-center gap-2 text-gray-400 bg-black/40 px-3 py-1.5 rounded-lg shadow-inner">
+                  <Calendar size={16} className="text-blue-400" />
                   <span>Ordered on {selectedOrder.date}</span>
                 </div>
               </div>
               
               <Grid numItems={1} numItemsMd={2} className="gap-6">
                 {/* Customer Information */}
-                <Card className="bg-black border border-gray-800 rounded-xl p-4">
-                  <Title className="text-white text-lg mb-4">Customer Information</Title>
+                <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
+                  <Title className="text-white text-lg mb-4 inline-flex items-center">
+                    <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Customer Information</span>
+                  </Title>
                   <div className="space-y-3">
                     <div className="flex items-start gap-3">
-                      <div className="p-2 rounded-lg bg-gray-800 text-gray-400 mt-0.5">
-                        <MapPin size={16} />
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10 text-blue-400 mt-0.5">
+                        <MapPin size={16} className="drop-shadow-md" />
                       </div>
                       <div>
                         <Text className="text-white font-medium">{selectedOrder.orderDetails.customer.name}</Text>
@@ -335,14 +340,14 @@ export default function Orders() {
                       </div>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-gray-800 text-gray-400">
-                        <Phone size={16} />
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10 text-blue-400">
+                        <Phone size={16} className="drop-shadow-md" />
                       </div>
                       <Text className="text-gray-400">{selectedOrder.orderDetails.customer.phone}</Text>
                     </div>
                     <div className="flex items-center gap-3">
-                      <div className="p-2 rounded-lg bg-gray-800 text-gray-400">
-                        <Mail size={16} />
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10 text-blue-400">
+                        <Mail size={16} className="drop-shadow-md" />
                       </div>
                       <Text className="text-gray-400">{selectedOrder.orderDetails.customer.email}</Text>
                     </div>
@@ -350,18 +355,20 @@ export default function Orders() {
                 </Card>
                 
                 {/* Payment & Shipping */}
-                <Card className="bg-black border border-gray-800 rounded-xl p-4">
-                  <Title className="text-white text-lg mb-4">Payment & Delivery</Title>
+                <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
+                  <Title className="text-white text-lg mb-4 inline-flex items-center">
+                    <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Payment & Delivery</span>
+                  </Title>
                   <div className="space-y-4">
                     <div className="flex items-start gap-3">
-                      <div className="p-2 rounded-lg bg-gray-800 text-gray-400 mt-0.5">
-                        <CreditCard size={16} />
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10 text-green-400 mt-0.5">
+                        <CreditCard size={16} className="drop-shadow-md" />
                       </div>
                       <div>
                         <Text className="text-white font-medium">Payment</Text>
                         <div className="flex items-center gap-2 mt-1">
                           <Text className="text-gray-400 text-sm">{selectedOrder.orderDetails.payment.method}</Text>
-                          <Badge color="green" className="bg-green-500/20 text-green-500">
+                          <Badge color="green" className="bg-green-500/20 text-green-400 border border-green-500/10 shadow-sm">
                             {selectedOrder.orderDetails.payment.status}
                           </Badge>
                         </div>
@@ -369,14 +376,17 @@ export default function Orders() {
                       </div>
                     </div>
                     <div className="flex items-start gap-3">
-                      <div className="p-2 rounded-lg bg-gray-800 text-gray-400 mt-0.5">
-                        <Truck size={16} />
+                      <div className="p-2 rounded-lg bg-gradient-to-br from-amber-500/20 to-amber-500/10 text-amber-400 mt-0.5">
+                        <Truck size={16} className="drop-shadow-md" />
                       </div>
                       <div>
                         <Text className="text-white font-medium">Shipping</Text>
                         <Text className="text-gray-400 text-sm mt-1">{selectedOrder.orderDetails.shipping.method}</Text>
                         {selectedOrder.status === 'Delivered' && selectedOrder.orderDetails.shipping.deliveredDate && (
-                          <Text className="text-green-500 text-sm mt-1">Delivered on {selectedOrder.orderDetails.shipping.deliveredDate}</Text>
+                          <Text className="text-green-400 text-sm mt-1 flex items-center gap-1">
+                            <CheckCircle size={14} />
+                            Delivered on {selectedOrder.orderDetails.shipping.deliveredDate}
+                          </Text>
                         )}
                         {selectedOrder.status !== 'Delivered' && (
                           <Text className="text-gray-400 text-sm mt-1">Estimated delivery: {selectedOrder.orderDetails.shipping.estimatedDelivery}</Text>
@@ -388,12 +398,14 @@ export default function Orders() {
               </Grid>
               
               {/* Products */}
-              <Card className="bg-black border border-gray-800 rounded-xl p-4">
-                <Title className="text-white text-lg mb-4">Products</Title>
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
+                <Title className="text-white text-lg mb-4 inline-flex items-center">
+                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Products</span>
+                </Title>
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHead>
-                      <TableRow className="border-b border-gray-800">
+                      <TableRow className="border-b border-gray-800/60">
                         <TableHeaderCell className="text-gray-400">Product</TableHeaderCell>
                         <TableHeaderCell className="text-gray-400">Quantity</TableHeaderCell>
                         <TableHeaderCell className="text-gray-400">Color</TableHeaderCell>
@@ -404,7 +416,7 @@ export default function Orders() {
                     </TableHead>
                     <TableBody>
                       {selectedOrder.orderDetails.products.map((product, i) => (
-                        <TableRow key={i} className="border-b border-gray-800">
+                        <TableRow key={i} className="border-b border-gray-800/60 hover:bg-gray-900/40 transition-colors">
                           <TableCell className="text-white font-medium">{product.name}</TableCell>
                           <TableCell className="text-white">{product.quantity}</TableCell>
                           <TableCell className="text-white">{product.color}</TableCell>
@@ -417,7 +429,7 @@ export default function Orders() {
                   </Table>
                 </div>
                 {selectedOrder.orderDetails.notes && (
-                  <div className="mt-4">
+                  <div className="mt-4 bg-gray-900/40 p-3 rounded-lg">
                     <Text className="text-white font-medium">Order Notes:</Text>
                     <Text className="text-gray-400 mt-1">{selectedOrder.orderDetails.notes}</Text>
                   </div>
@@ -427,7 +439,7 @@ export default function Orders() {
               <Flex justifyContent="end">
                 <button 
                   onClick={closeModals}
-                  className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-all"
+                  className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white px-8 py-2.5 rounded-lg transition-all shadow-lg hover:shadow-gray-900/30"
                 >
                   Close
                 </button>
@@ -439,21 +451,24 @@ export default function Orders() {
       
       {/* Tracking Modal */}
       {showTrackingModal && selectedOrder && selectedOrder.orderDetails.tracking && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-black border border-gray-800 rounded-xl shadow-lg w-full max-w-lg">
-            <div className="border-b border-gray-800 p-4 flex justify-between items-center">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
+          <div className="bg-gradient-to-b from-gray-900 to-black border-0 rounded-2xl shadow-2xl w-full max-w-lg relative">
+            {/* Gradient border effect */}
+            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-blue-500/40 via-amber-500/40 to-blue-500/40 -z-10"></div>
+            
+            <div className="border-b border-gray-800/60 p-4 flex justify-between items-center bg-gradient-to-r from-black/90 to-gray-900/90 backdrop-blur-sm rounded-t-2xl">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-blue-500/10">
-                  <Truck className="text-blue-500 h-6 w-6" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-blue-500/20 to-blue-500/10">
+                  <Truck className="text-blue-400 h-6 w-6 drop-shadow-md" />
                 </div>
                 <div>
                   <Text className="text-gray-400 text-sm">Tracking Information</Text>
-                  <Title className="text-white">{selectedOrder.id}</Title>
+                  <Title className="text-white text-xl drop-shadow-md">{selectedOrder.id}</Title>
                 </div>
               </div>
               <button 
                 onClick={closeModals} 
-                className="p-2 text-gray-400 hover:text-white transition-colors"
+                className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800/80 transition-all"
               >
                 <X size={20} />
               </button>
@@ -461,18 +476,18 @@ export default function Orders() {
             
             {selectedOrder.orderDetails.tracking && (
               <div className="p-6 space-y-6">
-                <Card className="bg-black border border-gray-800 rounded-xl p-4">
+                <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <Text className="text-gray-400">Carrier</Text>
-                      <Title className="text-white text-xl">{selectedOrder.orderDetails.tracking.carrier}</Title>
+                      <Title className="text-white text-xl">{selectedOrder.orderDetails.tracking?.carrier}</Title>
                     </div>
                     <Badge
                       color={selectedOrder.statusColor as 'green' | 'amber' | 'blue'}
                       className={`${
                         selectedOrder.status === 'Shipped'
-                          ? 'bg-amber-500/20 text-amber-500' 
-                          : 'bg-green-500/20 text-green-500'
+                          ? 'bg-gradient-to-r from-amber-500/30 to-amber-600/30 text-amber-400 border border-amber-500/20 shadow-md px-3 py-1' 
+                          : 'bg-gradient-to-r from-green-500/30 to-green-600/30 text-green-400 border border-green-500/20 shadow-md px-3 py-1'
                       }`}
                     >
                       {selectedOrder.status}
@@ -483,10 +498,10 @@ export default function Orders() {
                     <div>
                       <Text className="text-gray-400">Tracking Number</Text>
                       <div className="flex items-center gap-2 mt-1">
-                        <code className="bg-gray-900 px-3 py-1 rounded text-white">{selectedOrder.orderDetails.tracking.number}</code>
+                        <code className="bg-gray-900/80 px-3 py-1.5 rounded-lg text-white shadow-inner border border-gray-800/60">{selectedOrder.orderDetails.tracking?.number}</code>
                         <button 
-                          onClick={() => copyToClipboard(selectedOrder.orderDetails.tracking.number)}
-                          className="p-1 text-gray-400 hover:text-white transition-colors"
+                          onClick={() => selectedOrder.orderDetails.tracking?.number && copyToClipboard(selectedOrder.orderDetails.tracking.number)}
+                          className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800/80 transition-all"
                           title="Copy to clipboard"
                         >
                           <Copy size={16} />
@@ -496,32 +511,32 @@ export default function Orders() {
                     
                     <div>
                       <Text className="text-gray-400">Last Update</Text>
-                      <Text className="text-white mt-1">{selectedOrder.orderDetails.tracking.lastUpdate}</Text>
+                      <Text className="text-white mt-1 bg-gray-900/40 px-3 py-2 rounded-lg">{selectedOrder.orderDetails.tracking?.lastUpdate}</Text>
                     </div>
                     
                     <div className="pt-2">
                       <Text className="text-gray-400">Tracking Instructions</Text>
-                      <Text className="text-white mt-1">{selectedOrder.orderDetails.tracking.instructions}</Text>
+                      <Text className="text-white mt-1 bg-gray-900/40 px-3 py-2 rounded-lg">{selectedOrder.orderDetails.tracking?.instructions}</Text>
                     </div>
                   </div>
                 </Card>
                 
-                <Card className="bg-gray-900 border-none">
+                <Card className="bg-black/60 border border-blue-800/30 rounded-xl shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/40">
                   <a 
-                    href={selectedOrder.orderDetails.tracking.url} 
+                    href={selectedOrder.orderDetails.tracking?.url} 
                     target="_blank" 
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center gap-2 py-3 text-blue-500 hover:text-blue-400 transition-colors"
+                    className="flex items-center justify-center gap-2 py-3 text-blue-400 hover:text-blue-300 transition-colors"
                   >
                     <ExternalLink size={18} />
-                    <span>Track on {selectedOrder.orderDetails.tracking.carrier} Website</span>
+                    <span>Track on {selectedOrder.orderDetails.tracking?.carrier} Website</span>
                   </a>
                 </Card>
                 
                 <Flex justifyContent="end">
                   <button 
                     onClick={closeModals}
-                    className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-all"
+                    className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white px-8 py-2.5 rounded-lg transition-all shadow-lg hover:shadow-gray-900/30"
                   >
                     Close
                   </button>
