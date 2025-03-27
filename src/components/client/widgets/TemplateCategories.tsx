@@ -1,15 +1,15 @@
 import React from 'react';
-import { Shirt, CreditCard, Sticker, Image, Box, Phone, Home, PenTool } from 'lucide-react';
+import { Shirt, Scissors, ShoppingBag, Ruler, Backpack, Bookmark, Layers, Briefcase } from 'lucide-react';
 
 const categories = [
-  { icon: Shirt, label: 'Apparel' },
-  { icon: CreditCard, label: 'Business Cards' },
-  { icon: Sticker, label: 'Stickers' },
-  { icon: Image, label: 'Wall Art' },
-  { icon: Box, label: 'Packaging' },
-  { icon: Phone, label: 'Phone Cases' },
-  { icon: Home, label: 'Home & Living' },
-  { icon: PenTool, label: 'Custom' }
+  { icon: Shirt, label: 'T-Shirts' },
+  { icon: Backpack, label: 'Pants' },
+  { icon: Scissors, label: 'Shorts' },
+  { icon: Layers, label: 'Hoodies' },
+  { icon: Bookmark, label: 'Jackets' },
+  { icon: Ruler, label: 'Dresses' },
+  { icon: ShoppingBag, label: 'Ensembles' },
+  { icon: Briefcase, label: 'Uniforms' }
 ];
 
 export default function TemplateCategories() {
