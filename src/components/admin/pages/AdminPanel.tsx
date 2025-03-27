@@ -15,18 +15,12 @@ export default function AdminPanel() {
 
   return (
     <div className="space-y-6 text-white">
-      <div className="flex justify-between items-center mb-8">
-        <div>
-          <Title className="text-white text-3xl font-bold mb-1">Admin Control Panel</Title>
-          <div className="flex items-center">
-            <div className="w-10 h-1 bg-gradient-to-r from-green-500 to-green-300 rounded-full mr-2"></div>
-            <Text className="text-gray-400">Manage your platform in one place</Text>
-          </div>
+      <div className="mb-8">
+        <Title className="text-white text-3xl font-bold mb-1">Admin Control Panel</Title>
+        <div className="flex items-center">
+          <div className="w-10 h-1 bg-gradient-to-r from-green-500 to-green-300 rounded-full mr-2"></div>
+          <Text className="text-gray-400">Manage your platform in one place</Text>
         </div>
-        <button className="bg-gradient-to-r from-green-600 to-green-400 hover:from-green-500 hover:to-green-300 text-black font-medium px-4 py-2 rounded-lg flex items-center transition-all shadow-lg shadow-green-500/20">
-          <Settings className="w-4 h-4 mr-2" />
-          Global Settings
-        </button>
       </div>
 
       {/* Stats Overview */}
