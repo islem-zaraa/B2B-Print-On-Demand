@@ -88,8 +88,7 @@ export default function Products() {
   // Filter products based on category and search term
   const filteredProducts = products.filter(product => {
     const matchesCategory = selectedCategory === 'All' || product.category === selectedCategory;
-    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || 
-                          product.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -131,27 +130,26 @@ export default function Products() {
       </Flex>
 
       {/* Products Grid */}
-      <Grid numItems={1} numItemsSm={2} numItemsLg={3} className="gap-6">
+      <Grid numItems={1} numItemsSm={2} numItemsMd={3} numItemsLg={4} className="gap-4">
         {filteredProducts.map(product => (
-          <Card key={product.id} className="bg-black border border-gray-800 hover:border-green-600 transition-all rounded-xl overflow-hidden">
-            <div className="aspect-square bg-gray-900 rounded-lg overflow-hidden mb-4">
+          <Card key={product.id} className="bg-black border border-gray-800 hover:border-green-600 transition-all rounded-xl overflow-hidden p-3">
+            <div className="aspect-square bg-gray-900 rounded-lg overflow-hidden mb-3">
               <img 
                 src={product.image} 
                 alt={product.name} 
                 className="w-full h-full object-cover"
               />
             </div>
-            <Badge color="gray" className="mb-2">{product.category}</Badge>
-            <Title className="text-white text-xl mb-1">{product.name}</Title>
-            <Text className="text-gray-400 text-sm h-12 line-clamp-2 mb-2">{product.description}</Text>
-            <div className="flex justify-between items-center mt-4">
+            <Badge color="gray" className="mb-1">{product.category}</Badge>
+            <Title className="text-white text-lg mb-2">{product.name}</Title>
+            <div className="flex justify-between items-center">
               <div>
                 <Text className="text-gray-500 text-xs">Starting at</Text>
-                <Text className="text-green-500 text-xl font-bold">${product.basePrice}</Text>
+                <Text className="text-green-500 text-lg font-bold">${product.basePrice}</Text>
                 <Text className="text-gray-500 text-xs">Min. order: {product.minOrder}</Text>
               </div>
               <button className="bg-green-500 hover:bg-green-600 text-black p-2 rounded-lg transition-all">
-                <ShoppingCart size={20} />
+                <ShoppingCart size={18} />
               </button>
             </div>
           </Card>
