@@ -1,14 +1,14 @@
 import React from 'react';
-import { Shirt, Scissors, ShoppingBag, Ruler, Backpack, Bookmark, Layers, Briefcase } from 'lucide-react';
+import { Shirt, Container, Scissors, Layers, Wind, ShoppingBag, FolderInput, Briefcase } from 'lucide-react';
 
 const categories = [
   { icon: Shirt, label: 'T-Shirts' },
-  { icon: Backpack, label: 'Pants' },
+  { icon: Container, label: 'Pants' },
   { icon: Scissors, label: 'Shorts' },
   { icon: Layers, label: 'Hoodies' },
-  { icon: Bookmark, label: 'Jackets' },
-  { icon: Ruler, label: 'Dresses' },
-  { icon: ShoppingBag, label: 'Ensembles' },
+  { icon: Wind, label: 'Jackets' },
+  { icon: ShoppingBag, label: 'Dresses' },
+  { icon: FolderInput, label: 'Ensembles' },
   { icon: Briefcase, label: 'Uniforms' }
 ];
 
