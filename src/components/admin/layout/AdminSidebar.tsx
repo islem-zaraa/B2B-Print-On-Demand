@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 
 const menuItems = [
-  { icon: Shield, label: 'Admin Panel', path: '/admin' },
+  { icon: Shield, label: 'Admin Panel', path: '/admin', exact: true },
   { icon: Users, label: 'Users', path: '/admin/users' },
   { icon: Package, label: 'Products', path: '/admin/products' },
   { icon: ShoppingCart, label: 'Orders', path: '/admin/orders' },
@@ -31,6 +31,7 @@ export default function AdminSidebar() {
               <NavLink
                 key={item.path}
                 to={item.path}
+                end={item.exact}
                 className={({ isActive }) => `
                   flex items-center gap-3 px-4 py-3 rounded-lg transition-all
                   ${isActive 
