@@ -458,9 +458,6 @@ export default function OrderHistory() {
                       >
                         View
                       </button>
-                      <button className="text-blue-500 hover:text-blue-400 transition-colors">
-                        Reorder
-                      </button>
                     </div>
                   </TableCell>
                 </TableRow>
