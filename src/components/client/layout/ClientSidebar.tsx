@@ -2,12 +2,13 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
-  Grid
+  Grid,
+  PlusCircle
 } from 'lucide-react';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Overview', path: '/client' },
-  { icon: Grid, label: 'Templates', path: '/client/templates' }
+  { icon: PlusCircle, label: 'Add new order', path: '/client/templates' }
 ];
 
 export default function ClientSidebar() {
