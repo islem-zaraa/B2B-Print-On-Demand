@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Card, Title, Text, Table, TableRow, TableCell, TableHead, TableHeaderCell, TableBody, Badge, Grid, Flex, DateRangePicker, DateRangePickerValue, Button, Select, SelectItem } from '@tremor/react';
 import { Download, Search, Filter, Eye, FileText, CreditCard, X, Users, Calendar, CalendarClock, Building, Receipt, CheckCircle, ChevronDown, CalendarRange, Clock } from 'lucide-react';
 import { createPortal } from 'react-dom';
@@ -222,6 +222,9 @@ export default function Invoices() {
   const [statusDropdownRect, setStatusDropdownRect] = useState<DOMRect | null>(null);
   const [paymentDropdownRect, setPaymentDropdownRect] = useState<DOMRect | null>(null);
   const [dateDropdownRect, setDateDropdownRect] = useState<DOMRect | null>(null);
+  const statusButtonRef = useRef<HTMLButtonElement | null>(null);
+  const paymentButtonRef = useRef<HTMLButtonElement | null>(null);
+  const dateButtonRef = useRef<HTMLButtonElement | null>(null);
 
   // Apply filters when any filter changes
   useEffect(() => {
@@ -327,6 +330,37 @@ export default function Invoices() {
     setDateRange(value);
     setSelectedPreset(null);
   };
+
+  // Add a function to update the dropdown positions on scroll
+  const updateDropdownPositions = useCallback(() => {
+    if (showStatusDropdown && statusButtonRef.current) {
+      const rect = statusButtonRef.current.getBoundingClientRect();
+      setStatusDropdownRect(rect);
+    }
+    
+    if (showPaymentDropdown && paymentButtonRef.current) {
+      const rect = paymentButtonRef.current.getBoundingClientRect();
+      setPaymentDropdownRect(rect);
+    }
+    
+    if (showDatePicker && dateButtonRef.current) {
+      const rect = dateButtonRef.current.getBoundingClientRect();
+      setDateDropdownRect(rect);
+    }
+  }, [showStatusDropdown, showPaymentDropdown, showDatePicker]);
+
+  // Add scroll event listener
+  useEffect(() => {
+    if (showStatusDropdown || showPaymentDropdown || showDatePicker) {
+      window.addEventListener('scroll', updateDropdownPositions, { passive: true });
+      window.addEventListener('resize', updateDropdownPositions, { passive: true });
+      
+      return () => {
+        window.removeEventListener('scroll', updateDropdownPositions);
+        window.removeEventListener('resize', updateDropdownPositions);
+      };
+    }
+  }, [showStatusDropdown, showPaymentDropdown, showDatePicker, updateDropdownPositions]);
 
   return (
     <div className="space-y-6">
@@ -462,6 +496,7 @@ export default function Invoices() {
                     
                     <div className="relative mt-2">
                       <button
+                        ref={statusButtonRef}
                         onClick={(e) => {
                           const rect = e.currentTarget.getBoundingClientRect();
                           setStatusDropdownRect(rect);
@@ -569,6 +604,7 @@ export default function Invoices() {
                     
                     <div className="relative mt-2">
                       <button
+                        ref={paymentButtonRef}
                         onClick={(e) => {
                           const rect = e.currentTarget.getBoundingClientRect();
                           setPaymentDropdownRect(rect);
@@ -668,6 +704,7 @@ export default function Invoices() {
                     
                     <div className="relative mt-2">
                       <button
+                        ref={dateButtonRef}
                         onClick={(e) => {
                           const rect = e.currentTarget.getBoundingClientRect();
                           setDateDropdownRect(rect);
