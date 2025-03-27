@@ -4,9 +4,11 @@ import { Bell, Settings, LogOut } from 'lucide-react';
 import { useAuthStore } from '../../../stores/authStore';
 import Notification from '../../shared/Notification';
 import { useNotificationStore } from '../../../stores/notificationStore';
+import LogoutDialog from '../dialogs/LogoutDialog';
 
 export default function ClientHeader() {
-  const { user, signOut } = useAuthStore();
+  const [showLogoutDialog, setShowLogoutDialog] = React.useState(false);
+  const { user } = useAuthStore();
   const { notifications, showNotificationPanel, toggleNotificationPanel, markAsRead, markAllAsRead, clearAll, closeNotificationPanel } = useNotificationStore();
 
   const unreadCount = notifications.filter(n => !n.read).length;
@@ -29,7 +31,7 @@ export default function ClientHeader() {
             <Settings size={20} />
           </Link>
           <button 
-            onClick={() => signOut()}
+            onClick={() => setShowLogoutDialog(true)}
             className="p-2 text-gray-400 hover:text-green-500 transition-colors"
           >
             <LogOut size={20} />
@@ -46,6 +48,11 @@ export default function ClientHeader() {
           onClearAll={clearAll}
         />
       )}
+      
+      <LogoutDialog 
+        isOpen={showLogoutDialog} 
+        onClose={() => setShowLogoutDialog(false)} 
+      />
     </header>
   );
 }
