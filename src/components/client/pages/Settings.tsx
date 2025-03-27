@@ -4,22 +4,23 @@ import {
   User, 
   Bell, 
   Lock, 
-  Database, 
+  CreditCard, 
   Shield, 
-  Users, 
-  Wrench,
+  PaintBucket, 
+  Languages, 
   Eye, 
   EyeOff,
   Save,
   AlertCircle
 } from 'lucide-react';
-import { useAuth } from '../../../contexts/AuthContext';
+import { useAuthStore } from '../../../stores/authStore';
 
 type ProfileFormData = {
   fullName: string;
   email: string;
-  role: string;
-  adminLevel: string;
+  phone: string;
+  company: string;
+  bio: string;
 };
 
 type PasswordFormData = {
@@ -33,14 +34,15 @@ export default function Settings() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { user } = useAuth();
+  const { user } = useAuthStore();
   
   const profileForm = useForm<ProfileFormData>({
     defaultValues: {
-      fullName: user?.fullName || 'Admin User',
-      email: user?.email || 'admin@example.com',
-      role: 'Administrator',
-      adminLevel: 'Super Admin'
+      fullName: user?.full_name || '',
+      email: user?.email || '',
+      phone: '',
+      company: '',
+      bio: ''
     }
   });
 
@@ -49,7 +51,7 @@ export default function Settings() {
   const onProfileSubmit = (data: ProfileFormData) => {
     console.log('Profile data submitted:', data);
     // Here you would update the user's profile
-    alert('Admin profile updated successfully!');
+    alert('Profile updated successfully!');
   };
 
   const onPasswordSubmit = (data: PasswordFormData) => {
@@ -68,17 +70,17 @@ export default function Settings() {
 
   const tabs = [
     { id: 'profile', label: 'Profile', icon: User },
-    { id: 'password', label: 'Password', icon: Lock },
     { id: 'notifications', label: 'Notifications', icon: Bell },
-    { id: 'system', label: 'System Settings', icon: Wrench },
-    { id: 'users', label: 'User Management', icon: Users },
-    { id: 'security', label: 'Security', icon: Shield },
-    { id: 'database', label: 'Database', icon: Database }
+    { id: 'password', label: 'Password', icon: Lock },
+    { id: 'payment', label: 'Payment Methods', icon: CreditCard },
+    { id: 'privacy', label: 'Privacy & Security', icon: Shield },
+    { id: 'appearance', label: 'Appearance', icon: PaintBucket },
+    { id: 'language', label: 'Language', icon: Languages }
   ];
 
   return (
     <div className="space-y-8">
-      <h1 className="text-2xl font-bold text-white">Admin Settings</h1>
+      <h1 className="text-2xl font-bold text-white">Settings</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
         {/* Tabs */}
@@ -112,7 +114,7 @@ export default function Settings() {
           <div className="backdrop-blur-xl bg-black/30 border border-green-500/10 rounded-2xl p-6">
             {activeTab === 'profile' && (
               <div>
-                <h2 className="text-xl font-semibold text-white mb-6">Admin Profile</h2>
+                <h2 className="text-xl font-semibold text-white mb-6">Profile Settings</h2>
                 <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-6">
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
@@ -153,36 +155,44 @@ export default function Settings() {
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                      <label htmlFor="role" className="block text-sm font-medium text-gray-400 mb-2">
-                        Role
+                      <label htmlFor="phone" className="block text-sm font-medium text-gray-400 mb-2">
+                        Phone Number
                       </label>
-                      <select
-                        id="role"
-                        {...profileForm.register("role")}
-                        className="w-full bg-black/30 border border-green-500/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-500/50 backdrop-blur-xl"
-                      >
-                        <option value="Administrator">Administrator</option>
-                        <option value="Manager">Manager</option>
-                        <option value="Editor">Editor</option>
-                        <option value="Viewer">Viewer</option>
-                      </select>
+                      <input
+                        id="phone"
+                        type="tel"
+                        {...profileForm.register("phone")}
+                        className="w-full bg-black/30 border border-green-500/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-500/50 backdrop-blur-xl"
+                        placeholder="(123) 456-7890"
+                      />
                     </div>
                     <div>
-                      <label htmlFor="adminLevel" className="block text-sm font-medium text-gray-400 mb-2">
-                        Admin Level
+                      <label htmlFor="company" className="block text-sm font-medium text-gray-400 mb-2">
+                        Company
                       </label>
-                      <select
-                        id="adminLevel"
-                        {...profileForm.register("adminLevel")}
-                        className="w-full bg-black/30 border border-green-500/20 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-green-500/50 backdrop-blur-xl"
-                      >
-                        <option value="Super Admin">Super Admin</option>
-                        <option value="System Admin">System Admin</option>
-                        <option value="Department Admin">Department Admin</option>
-                      </select>
+                      <input
+                        id="company"
+                        type="text"
+                        {...profileForm.register("company")}
+                        className="w-full bg-black/30 border border-green-500/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-500/50 backdrop-blur-xl"
+                        placeholder="Your Company Name"
+                      />
                     </div>
                   </div>
-                  
+
+                  <div>
+                    <label htmlFor="bio" className="block text-sm font-medium text-gray-400 mb-2">
+                      Bio
+                    </label>
+                    <textarea
+                      id="bio"
+                      rows={4}
+                      {...profileForm.register("bio")}
+                      className="w-full bg-black/30 border border-green-500/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-500/50 backdrop-blur-xl"
+                      placeholder="Tell us about yourself or your business..."
+                    />
+                  </div>
+
                   <div className="flex justify-end">
                     <button
                       type="submit"
@@ -198,7 +208,7 @@ export default function Settings() {
 
             {activeTab === 'password' && (
               <div>
-                <h2 className="text-xl font-semibold text-white mb-6">Change Admin Password</h2>
+                <h2 className="text-xl font-semibold text-white mb-6">Password Settings</h2>
                 <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-6">
                   <div>
                     <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-400 mb-2">
@@ -235,8 +245,8 @@ export default function Settings() {
                         {...passwordForm.register("newPassword", {
                           required: "New password is required",
                           minLength: {
-                            value: 12,
-                            message: "Admin passwords must be at least 12 characters"
+                            value: 8,
+                            message: "Password must be at least 8 characters"
                           }
                         })}
                         className="w-full bg-black/30 border border-green-500/20 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-green-500/50 backdrop-blur-xl"
@@ -282,9 +292,9 @@ export default function Settings() {
                     )}
                   </div>
 
-                  <div className="flex items-center p-4 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                    <AlertCircle size={20} className="text-yellow-500 mr-2" />
-                    <p className="text-sm text-yellow-500">Admin passwords must be at least 12 characters and include uppercase letters, numbers, and special characters for enhanced security.</p>
+                  <div className="flex items-center p-4 bg-blue-500/10 border border-blue-500/20 rounded-lg">
+                    <AlertCircle size={20} className="text-blue-500 mr-2" />
+                    <p className="text-sm text-blue-500">Password should be at least 8 characters and include numbers, letters, and special characters.</p>
                   </div>
 
                   <div className="flex justify-end">
@@ -299,18 +309,18 @@ export default function Settings() {
                 </form>
               </div>
             )}
-            
+
             {activeTab === 'notifications' && (
               <div>
-                <h2 className="text-xl font-semibold text-white mb-6">Admin Notification Settings</h2>
+                <h2 className="text-xl font-semibold text-white mb-6">Notification Settings</h2>
                 <div className="space-y-6">
                   <div className="flex items-center justify-between border-b border-green-500/10 pb-4">
                     <div>
-                      <h3 className="text-white font-medium">System Alerts</h3>
-                      <p className="text-gray-400 text-sm mt-1">Critical notifications about system performance and security</p>
+                      <h3 className="text-white font-medium">Email Notifications</h3>
+                      <p className="text-gray-400 text-sm mt-1">Receive emails about order updates, promotions, and account activity</p>
                     </div>
                     <div className="relative inline-block w-12 h-6">
-                      <input type="checkbox" id="systemToggle" className="sr-only" defaultChecked />
+                      <input type="checkbox" id="emailToggle" className="sr-only" defaultChecked />
                       <span className="block w-12 h-6 bg-green-500/20 rounded-full cursor-pointer"></span>
                       <span className="absolute left-1 top-1 bg-green-500 w-4 h-4 rounded-full transition-transform duration-200 ease-in-out transform translate-x-6"></span>
                     </div>
@@ -318,20 +328,8 @@ export default function Settings() {
 
                   <div className="flex items-center justify-between border-b border-green-500/10 pb-4">
                     <div>
-                      <h3 className="text-white font-medium">User Activity</h3>
-                      <p className="text-gray-400 text-sm mt-1">Notifications about user logins, registrations, and account changes</p>
-                    </div>
-                    <div className="relative inline-block w-12 h-6">
-                      <input type="checkbox" id="userToggle" className="sr-only" defaultChecked />
-                      <span className="block w-12 h-6 bg-green-500/20 rounded-full cursor-pointer"></span>
-                      <span className="absolute left-1 top-1 bg-green-500 w-4 h-4 rounded-full transition-transform duration-200 ease-in-out transform translate-x-6"></span>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between border-b border-green-500/10 pb-4">
-                    <div>
-                      <h3 className="text-white font-medium">Order Notifications</h3>
-                      <p className="text-gray-400 text-sm mt-1">Updates about new orders and order status changes</p>
+                      <h3 className="text-white font-medium">Order Updates</h3>
+                      <p className="text-gray-400 text-sm mt-1">Notifications about status changes to your orders</p>
                     </div>
                     <div className="relative inline-block w-12 h-6">
                       <input type="checkbox" id="orderToggle" className="sr-only" defaultChecked />
@@ -342,11 +340,11 @@ export default function Settings() {
 
                   <div className="flex items-center justify-between border-b border-green-500/10 pb-4">
                     <div>
-                      <h3 className="text-white font-medium">Admin Actions</h3>
-                      <p className="text-gray-400 text-sm mt-1">Notifications about actions taken by other administrators</p>
+                      <h3 className="text-white font-medium">Marketing</h3>
+                      <p className="text-gray-400 text-sm mt-1">Promotional emails, new features, and special offers</p>
                     </div>
                     <div className="relative inline-block w-12 h-6">
-                      <input type="checkbox" id="adminToggle" className="sr-only" />
+                      <input type="checkbox" id="marketingToggle" className="sr-only" />
                       <span className="block w-12 h-6 bg-green-500/20 rounded-full cursor-pointer"></span>
                       <span className="absolute left-1 top-1 bg-green-500 w-4 h-4 rounded-full transition-transform duration-200 ease-in-out transform"></span>
                     </div>
@@ -365,10 +363,10 @@ export default function Settings() {
               </div>
             )}
 
-            {(activeTab === 'system' || activeTab === 'users' || activeTab === 'security' || activeTab === 'database') && (
+            {(activeTab === 'payment' || activeTab === 'privacy' || activeTab === 'appearance' || activeTab === 'language') && (
               <div className="text-center py-8">
-                <h2 className="text-xl font-semibold text-white mb-4">{tabs.find(tab => tab.id === activeTab)?.label}</h2>
-                <p className="text-gray-400">This admin section is currently under development.</p>
+                <h2 className="text-xl font-semibold text-white mb-4">{tabs.find(tab => tab.id === activeTab)?.label} Settings</h2>
+                <p className="text-gray-400">This section is currently under development.</p>
               </div>
             )}
           </div>
@@ -376,4 +374,4 @@ export default function Settings() {
       </div>
     </div>
   );
-}
+} 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Bell, Settings, LogOut } from 'lucide-react';
 import { useAuth } from '../../../contexts/AuthContext';
 import LogoutDialog from '../dialogs/LogoutDialog';
@@ -16,9 +17,9 @@ export default function AdminHeader() {
             <Bell size={20} />
             <span className="absolute top-0 right-0 w-2 h-2 bg-green-500 rounded-full"></span>
           </button>
-          <button className="p-2 text-gray-400 hover:text-green-500 transition-colors">
+          <Link to="/admin/settings" className="p-2 text-gray-400 hover:text-green-500 transition-colors">
             <Settings size={20} />
-          </button>
+          </Link>
           <button 
             onClick={() => setShowLogoutDialog(true)}
             className="p-2 text-gray-400 hover:text-green-500 transition-colors"
