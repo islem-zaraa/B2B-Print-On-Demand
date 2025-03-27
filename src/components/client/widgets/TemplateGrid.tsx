@@ -1,33 +1,34 @@
 import React from 'react';
 import { ArrowRight, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const templates = [
   {
     id: 1,
     name: 'Classic T-Shirt Design',
-    category: 'Apparel',
+    category: 'T-Shirts',
     preview: 'https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=300&q=80',
     likes: 128
   },
   {
     id: 2,
-    name: 'Modern Business Card',
-    category: 'Business Cards',
-    preview: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=300&q=80',
+    name: 'Premium Hoodie',
+    category: 'Hoodies',
+    preview: 'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&w=300&q=80',
     likes: 89
   },
   {
     id: 3,
-    name: 'Minimalist Logo Sticker',
-    category: 'Stickers',
-    preview: 'https://images.unsplash.com/photo-1589384267710-7a25bc5b4862?auto=format&fit=crop&w=300&q=80',
+    name: 'Casual Shorts Design',
+    category: 'Shorts',
+    preview: 'https://images.unsplash.com/photo-1617953141121-425c93d4692a?auto=format&fit=crop&w=300&q=80',
     likes: 256
   },
   {
     id: 4,
-    name: 'Abstract Wall Art',
-    category: 'Wall Art',
-    preview: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=300&q=80',
+    name: 'Stylish Jacket',
+    category: 'Jackets',
+    preview: 'https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=300&q=80',
     likes: 167
   }
 ];
@@ -48,10 +49,13 @@ export default function TemplateGrid() {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent opacity-0 group-hover:opacity-100 transition-opacity">
               <div className="absolute bottom-0 left-0 right-0 p-4">
-                <button className="w-full bg-green-500 text-black px-4 py-2 rounded-lg hover:bg-green-400 transition-all flex items-center justify-center gap-2">
+                <Link 
+                  to={`/client/templates/${template.id}`}
+                  className="w-full bg-green-500 text-black px-4 py-2 rounded-lg hover:bg-green-400 transition-all flex items-center justify-center gap-2"
+                >
                   Use Template
                   <ArrowRight size={20} />
-                </button>
+                </Link>
               </div>
             </div>
           </div>
