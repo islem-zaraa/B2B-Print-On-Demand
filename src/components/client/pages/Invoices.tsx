@@ -202,6 +202,8 @@ export default function Invoices() {
   const [filteredInvoices, setFilteredInvoices] = useState(invoices);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
+  const [showStatusDropdown, setShowStatusDropdown] = useState(false);
+  const [showPaymentDropdown, setShowPaymentDropdown] = useState(false);
 
   // Apply filters when any filter changes
   useEffect(() => {
@@ -441,18 +443,59 @@ export default function Invoices() {
                     </Text>
                     
                     <div className="relative mt-2">
-                      <Select 
-                        value={statusFilter} 
-                        onValueChange={setStatusFilter}
-                        className="w-full bg-gray-900/80 border-gray-800/60 text-white shadow-inner ring-0 ring-offset-0 focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30"
+                      <button
+                        onClick={() => {
+                          setShowStatusDropdown(!showStatusDropdown); 
+                          setShowPaymentDropdown(false);
+                          setShowDatePicker(false);
+                        }}
+                        className="w-full bg-gray-900/80 border border-gray-800/60 hover:border-green-500/50 text-white rounded-lg py-2.5 px-4 flex items-center justify-between transition-colors focus:outline-none focus:border-green-500/50 shadow-inner"
                       >
-                        <SelectItem value="All">All Statuses</SelectItem>
-                        <SelectItem value="Paid">Paid</SelectItem>
-                        <SelectItem value="Pending">Pending</SelectItem>
-                      </Select>
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <ChevronDown size={14} className="text-green-500/70" />
-                      </div>
+                        <div className="flex items-center gap-2">
+                          <CheckCircle size={16} className="text-green-400" />
+                          <span>{statusFilter === 'All' ? 'All Statuses' : statusFilter}</span>
+                        </div>
+                        <ChevronDown size={16} className={`text-green-400/70 transition-transform ${showStatusDropdown ? 'rotate-180' : ''}`} />
+                      </button>
+                      
+                      {/* Status dropdown */}
+                      {showStatusDropdown && (
+                        <div className="absolute z-20 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl">
+                          <div className="p-4">
+                            <div className="flex items-center justify-between mb-4">
+                              <Text className="text-white font-medium">Select Status</Text>
+                              <button 
+                                onClick={() => setShowStatusDropdown(false)}
+                                className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-800/80"
+                              >
+                                <X size={16} />
+                              </button>
+                            </div>
+                            
+                            <div className="space-y-2">
+                              {['All', 'Paid', 'Pending'].map(status => (
+                                <button
+                                  key={status}
+                                  onClick={() => {
+                                    setStatusFilter(status);
+                                    setShowStatusDropdown(false);
+                                  }}
+                                  className={`w-full py-2 px-3 rounded-lg text-sm transition-all flex items-center ${
+                                    statusFilter === status
+                                      ? 'bg-gradient-to-r from-green-500/90 to-green-600/90 text-white border border-green-500/30'
+                                      : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 border border-gray-700/50'
+                                  }`}
+                                >
+                                  {status === 'Paid' && <CheckCircle size={14} className="mr-2 text-green-300" />}
+                                  {status === 'Pending' && <Clock size={14} className="mr-2 text-amber-300" />}
+                                  {status === 'All' && <CheckCircle size={14} className="mr-2 text-blue-300" />}
+                                  {status}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     
                     {statusFilter !== 'All' && (
@@ -492,20 +535,59 @@ export default function Invoices() {
                     </Text>
                     
                     <div className="relative mt-2">
-                      <Select 
-                        value={paymentMethodFilter} 
-                        onValueChange={setPaymentMethodFilter}
-                        className="w-full bg-gray-900/80 border-gray-800/60 text-white shadow-inner ring-0 ring-offset-0 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30"
+                      <button
+                        onClick={() => {
+                          setShowPaymentDropdown(!showPaymentDropdown);
+                          setShowStatusDropdown(false);
+                          setShowDatePicker(false);
+                        }}
+                        className="w-full bg-gray-900/80 border border-gray-800/60 hover:border-blue-500/50 text-white rounded-lg py-2.5 px-4 flex items-center justify-between transition-colors focus:outline-none focus:border-blue-500/50 shadow-inner"
                       >
-                        {paymentMethods.map((method) => (
-                          <SelectItem key={method} value={method}>
-                            {method}
-                          </SelectItem>
-                        ))}
-                      </Select>
-                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
-                        <ChevronDown size={14} className="text-blue-500/70" />
-                      </div>
+                        <div className="flex items-center gap-2">
+                          <CreditCard size={16} className="text-blue-400" />
+                          <span>{paymentMethodFilter}</span>
+                        </div>
+                        <ChevronDown size={16} className={`text-blue-400/70 transition-transform ${showPaymentDropdown ? 'rotate-180' : ''}`} />
+                      </button>
+                      
+                      {/* Payment method dropdown */}
+                      {showPaymentDropdown && (
+                        <div className="absolute z-20 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl">
+                          <div className="p-4">
+                            <div className="flex items-center justify-between mb-4">
+                              <Text className="text-white font-medium">Select Payment Method</Text>
+                              <button 
+                                onClick={() => setShowPaymentDropdown(false)}
+                                className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-800/80"
+                              >
+                                <X size={16} />
+                              </button>
+                            </div>
+                            
+                            <div className="space-y-2 max-h-48 overflow-y-auto">
+                              {paymentMethods.map(method => (
+                                <button
+                                  key={method}
+                                  onClick={() => {
+                                    setPaymentMethodFilter(method);
+                                    setShowPaymentDropdown(false);
+                                  }}
+                                  className={`w-full py-2 px-3 rounded-lg text-sm transition-all flex items-center ${
+                                    paymentMethodFilter === method
+                                      ? 'bg-gradient-to-r from-blue-500/90 to-blue-600/90 text-white border border-blue-500/30'
+                                      : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 border border-gray-700/50'
+                                  }`}
+                                >
+                                  {method === 'Credit Card' && <CreditCard size={14} className="mr-2 text-blue-300" />}
+                                  {method === 'Bank Transfer' && <Building size={14} className="mr-2 text-blue-300" />}
+                                  {method === 'All' && <CreditCard size={14} className="mr-2 text-blue-300" />}
+                                  {method}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      )}
                     </div>
                     
                     {paymentMethodFilter !== 'All' && (
