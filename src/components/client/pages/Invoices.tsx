@@ -444,8 +444,13 @@ export default function Invoices() {
                     
                     <div className="relative mt-2">
                       <button
-                        onClick={() => {
-                          setShowStatusDropdown(!showStatusDropdown); 
+                        onClick={(e) => {
+                          const button = e.currentTarget;
+                          const rect = button.getBoundingClientRect();
+                          document.documentElement.style.setProperty('--status-dropdown-top', `${rect.bottom}px`);
+                          document.documentElement.style.setProperty('--status-dropdown-left', `${rect.left}px`);
+                          document.documentElement.style.setProperty('--status-dropdown-width', `${rect.width}px`);
+                          setShowStatusDropdown(!showStatusDropdown);
                           setShowPaymentDropdown(false);
                           setShowDatePicker(false);
                         }}
@@ -460,38 +465,46 @@ export default function Invoices() {
                       
                       {/* Status dropdown */}
                       {showStatusDropdown && (
-                        <div className="absolute z-50 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.2))' }}>
-                          <div className="p-4">
-                            <div className="flex items-center justify-between mb-4">
-                              <Text className="text-white font-medium">Select Status</Text>
-                              <button 
-                                onClick={() => setShowStatusDropdown(false)}
-                                className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-800/80"
-                              >
-                                <X size={16} />
-                              </button>
-                            </div>
-                            
-                            <div className="space-y-2">
-                              {['All', 'Paid', 'Pending'].map(status => (
-                                <button
-                                  key={status}
-                                  onClick={() => {
-                                    setStatusFilter(status);
-                                    setShowStatusDropdown(false);
-                                  }}
-                                  className={`w-full py-2 px-3 rounded-lg text-sm transition-all flex items-center ${
-                                    statusFilter === status
-                                      ? 'bg-gradient-to-r from-green-500/90 to-green-600/90 text-white border border-green-500/30'
-                                      : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 border border-gray-700/50'
-                                  }`}
-                                >
-                                  {status === 'Paid' && <CheckCircle size={14} className="mr-2 text-green-300" />}
-                                  {status === 'Pending' && <Clock size={14} className="mr-2 text-amber-300" />}
-                                  {status === 'All' && <CheckCircle size={14} className="mr-2 text-blue-300" />}
-                                  {status}
-                                </button>
-                              ))}
+                        <div className="fixed inset-0 z-50 pointer-events-none">
+                          <div className="pointer-events-auto absolute" style={{ 
+                            top: 'var(--status-dropdown-top, 0)', 
+                            left: 'var(--status-dropdown-left, 0)', 
+                            width: 'var(--status-dropdown-width, 250px)'
+                          }}>
+                            <div className="mt-2 bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.2))' }}>
+                              <div className="p-4">
+                                <div className="flex items-center justify-between mb-4">
+                                  <Text className="text-white font-medium">Select Status</Text>
+                                  <button 
+                                    onClick={() => setShowStatusDropdown(false)}
+                                    className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-800/80"
+                                  >
+                                    <X size={16} />
+                                  </button>
+                                </div>
+                                
+                                <div className="space-y-2">
+                                  {['All', 'Paid', 'Pending'].map(status => (
+                                    <button
+                                      key={status}
+                                      onClick={() => {
+                                        setStatusFilter(status);
+                                        setShowStatusDropdown(false);
+                                      }}
+                                      className={`w-full py-2 px-3 rounded-lg text-sm transition-all flex items-center ${
+                                        statusFilter === status
+                                          ? 'bg-gradient-to-r from-green-500/90 to-green-600/90 text-white border border-green-500/30'
+                                          : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 border border-gray-700/50'
+                                      }`}
+                                    >
+                                      {status === 'Paid' && <CheckCircle size={14} className="mr-2 text-green-300" />}
+                                      {status === 'Pending' && <Clock size={14} className="mr-2 text-amber-300" />}
+                                      {status === 'All' && <CheckCircle size={14} className="mr-2 text-blue-300" />}
+                                      {status}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -536,7 +549,12 @@ export default function Invoices() {
                     
                     <div className="relative mt-2">
                       <button
-                        onClick={() => {
+                        onClick={(e) => {
+                          const button = e.currentTarget;
+                          const rect = button.getBoundingClientRect();
+                          document.documentElement.style.setProperty('--payment-dropdown-top', `${rect.bottom}px`);
+                          document.documentElement.style.setProperty('--payment-dropdown-left', `${rect.left}px`);
+                          document.documentElement.style.setProperty('--payment-dropdown-width', `${rect.width}px`);
                           setShowPaymentDropdown(!showPaymentDropdown);
                           setShowStatusDropdown(false);
                           setShowDatePicker(false);
@@ -552,38 +570,46 @@ export default function Invoices() {
                       
                       {/* Payment method dropdown */}
                       {showPaymentDropdown && (
-                        <div className="absolute z-50 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(59, 130, 246, 0.2))' }}>
-                          <div className="p-4">
-                            <div className="flex items-center justify-between mb-4">
-                              <Text className="text-white font-medium">Select Payment Method</Text>
-                              <button 
-                                onClick={() => setShowPaymentDropdown(false)}
-                                className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-800/80"
-                              >
-                                <X size={16} />
-                              </button>
-                            </div>
-                            
-                            <div className="space-y-2 max-h-48 overflow-y-auto">
-                              {paymentMethods.map(method => (
-                                <button
-                                  key={method}
-                                  onClick={() => {
-                                    setPaymentMethodFilter(method);
-                                    setShowPaymentDropdown(false);
-                                  }}
-                                  className={`w-full py-2 px-3 rounded-lg text-sm transition-all flex items-center ${
-                                    paymentMethodFilter === method
-                                      ? 'bg-gradient-to-r from-blue-500/90 to-blue-600/90 text-white border border-blue-500/30'
-                                      : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 border border-gray-700/50'
-                                  }`}
-                                >
-                                  {method === 'Credit Card' && <CreditCard size={14} className="mr-2 text-blue-300" />}
-                                  {method === 'Bank Transfer' && <Building size={14} className="mr-2 text-blue-300" />}
-                                  {method === 'All' && <CreditCard size={14} className="mr-2 text-blue-300" />}
-                                  {method}
-                                </button>
-                              ))}
+                        <div className="fixed inset-0 z-50 pointer-events-none">
+                          <div className="pointer-events-auto absolute" style={{ 
+                            top: 'var(--payment-dropdown-top, 0)', 
+                            left: 'var(--payment-dropdown-left, 0)', 
+                            width: 'var(--payment-dropdown-width, 250px)'
+                          }}>
+                            <div className="mt-2 bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(59, 130, 246, 0.2))' }}>
+                              <div className="p-4">
+                                <div className="flex items-center justify-between mb-4">
+                                  <Text className="text-white font-medium">Select Payment Method</Text>
+                                  <button 
+                                    onClick={() => setShowPaymentDropdown(false)}
+                                    className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-800/80"
+                                  >
+                                    <X size={16} />
+                                  </button>
+                                </div>
+                                
+                                <div className="space-y-2 max-h-48 overflow-y-auto">
+                                  {paymentMethods.map(method => (
+                                    <button
+                                      key={method}
+                                      onClick={() => {
+                                        setPaymentMethodFilter(method);
+                                        setShowPaymentDropdown(false);
+                                      }}
+                                      className={`w-full py-2 px-3 rounded-lg text-sm transition-all flex items-center ${
+                                        paymentMethodFilter === method
+                                          ? 'bg-gradient-to-r from-blue-500/90 to-blue-600/90 text-white border border-blue-500/30'
+                                          : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 border border-gray-700/50'
+                                      }`}
+                                    >
+                                      {method === 'Credit Card' && <CreditCard size={14} className="mr-2 text-blue-300" />}
+                                      {method === 'Bank Transfer' && <Building size={14} className="mr-2 text-blue-300" />}
+                                      {method === 'All' && <CreditCard size={14} className="mr-2 text-blue-300" />}
+                                      {method}
+                                    </button>
+                                  ))}
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -620,7 +646,16 @@ export default function Invoices() {
                     
                     <div className="relative mt-2">
                       <button
-                        onClick={() => setShowDatePicker(!showDatePicker)}
+                        onClick={(e) => {
+                          const button = e.currentTarget;
+                          const rect = button.getBoundingClientRect();
+                          document.documentElement.style.setProperty('--date-dropdown-top', `${rect.bottom}px`);
+                          document.documentElement.style.setProperty('--date-dropdown-left', `${rect.left}px`);
+                          document.documentElement.style.setProperty('--date-dropdown-width', `${rect.width}px`);
+                          setShowDatePicker(!showDatePicker);
+                          setShowStatusDropdown(false);
+                          setShowPaymentDropdown(false);
+                        }}
                         className="w-full bg-gray-900/80 border border-gray-800/60 hover:border-amber-500/50 text-white rounded-lg py-2.5 px-4 flex items-center justify-between transition-colors focus:outline-none focus:border-amber-500/50 shadow-inner"
                       >
                         <div className="flex items-center gap-2">
@@ -640,72 +675,80 @@ export default function Invoices() {
                       
                       {/* Date picker dropdown */}
                       {showDatePicker && (
-                        <div className="absolute z-50 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 0.2))' }}>
-                          <div className="p-4 border-b border-gray-800/60">
-                            <div className="flex items-center justify-between mb-4">
-                              <Text className="text-white font-medium">Select Date Range</Text>
-                              <button 
-                                onClick={() => setShowDatePicker(false)}
-                                className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-800/80"
-                              >
-                                <X size={16} />
-                              </button>
-                            </div>
-                            
-                            {/* Presets */}
-                            <div className="grid grid-cols-2 gap-2 mb-4">
-                              {datePresets.map(preset => (
-                                <button
-                                  key={preset.value}
-                                  onClick={() => handlePresetSelect(preset.value)}
-                                  className={`py-2 px-3 rounded-lg text-sm transition-all ${
-                                    selectedPreset === preset.value
-                                      ? 'bg-gradient-to-r from-amber-500/90 to-amber-600/90 text-white border border-amber-500/30'
-                                      : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 border border-gray-700/50'
-                                  }`}
-                                >
-                                  {preset.label}
-                                </button>
-                              ))}
-                            </div>
-                            
-                            {/* Custom date selection */}
-                            <div className="flex gap-2">
-                              <div className="w-1/2">
-                                <Text className="text-gray-400 text-xs mb-1">Start Date</Text>
-                                <input 
-                                  type="date" 
-                                  className="w-full bg-gray-900/80 border border-gray-800/60 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-amber-500/50 shadow-inner"
-                                  onChange={(e) => handleCustomDateSelect({ ...dateRange, from: e.target.value ? new Date(e.target.value) : undefined })}
-                                  value={dateRange?.from ? dateRange.from.toISOString().split('T')[0] : ''}
-                                />
+                        <div className="fixed inset-0 z-50 pointer-events-none">
+                          <div className="pointer-events-auto absolute" style={{ 
+                            top: 'var(--date-dropdown-top, 0)', 
+                            left: 'var(--date-dropdown-left, 0)', 
+                            width: 'var(--date-dropdown-width, 250px)'
+                          }}>
+                            <div className="mt-2 bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 0.2))' }}>
+                              <div className="p-4 border-b border-gray-800/60">
+                                <div className="flex items-center justify-between mb-4">
+                                  <Text className="text-white font-medium">Select Date Range</Text>
+                                  <button 
+                                    onClick={() => setShowDatePicker(false)}
+                                    className="text-gray-400 hover:text-white transition-colors p-1 rounded-full hover:bg-gray-800/80"
+                                  >
+                                    <X size={16} />
+                                  </button>
+                                </div>
+                                
+                                {/* Presets */}
+                                <div className="grid grid-cols-2 gap-2 mb-4">
+                                  {datePresets.map(preset => (
+                                    <button
+                                      key={preset.value}
+                                      onClick={() => handlePresetSelect(preset.value)}
+                                      className={`py-2 px-3 rounded-lg text-sm transition-all ${
+                                        selectedPreset === preset.value
+                                          ? 'bg-gradient-to-r from-amber-500/90 to-amber-600/90 text-white border border-amber-500/30'
+                                          : 'bg-gray-800/80 text-gray-300 hover:bg-gray-700/80 border border-gray-700/50'
+                                      }`}
+                                    >
+                                      {preset.label}
+                                    </button>
+                                  ))}
+                                </div>
+                                
+                                {/* Custom date selection */}
+                                <div className="flex gap-2">
+                                  <div className="w-1/2">
+                                    <Text className="text-gray-400 text-xs mb-1">Start Date</Text>
+                                    <input 
+                                      type="date" 
+                                      className="w-full bg-gray-900/80 border border-gray-800/60 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-amber-500/50 shadow-inner"
+                                      onChange={(e) => handleCustomDateSelect({ ...dateRange, from: e.target.value ? new Date(e.target.value) : undefined })}
+                                      value={dateRange?.from ? dateRange.from.toISOString().split('T')[0] : ''}
+                                    />
+                                  </div>
+                                  <div className="w-1/2">
+                                    <Text className="text-gray-400 text-xs mb-1">End Date</Text>
+                                    <input 
+                                      type="date" 
+                                      className="w-full bg-gray-900/80 border border-gray-800/60 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-amber-500/50 shadow-inner"
+                                      onChange={(e) => handleCustomDateSelect({ ...dateRange, to: e.target.value ? new Date(e.target.value) : undefined })}
+                                      value={dateRange?.to ? dateRange.to.toISOString().split('T')[0] : ''}
+                                    />
+                                  </div>
+                                </div>
+                                
+                                <div className="mt-4 flex justify-between">
+                                  <button
+                                    onClick={() => setDateRange(undefined)}
+                                    className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1"
+                                  >
+                                    <X size={12} />
+                                    Clear
+                                  </button>
+                                  <button
+                                    onClick={() => setShowDatePicker(false)}
+                                    className="bg-gradient-to-r from-amber-500/90 to-amber-600/90 hover:from-amber-500 hover:to-amber-500 text-white px-4 py-1.5 rounded-lg text-sm transition-colors shadow-md border border-amber-500/30 flex items-center gap-1"
+                                  >
+                                    <CheckCircle size={12} />
+                                    Apply
+                                  </button>
+                                </div>
                               </div>
-                              <div className="w-1/2">
-                                <Text className="text-gray-400 text-xs mb-1">End Date</Text>
-                                <input 
-                                  type="date" 
-                                  className="w-full bg-gray-900/80 border border-gray-800/60 text-white rounded-lg px-3 py-2 focus:outline-none focus:border-amber-500/50 shadow-inner"
-                                  onChange={(e) => handleCustomDateSelect({ ...dateRange, to: e.target.value ? new Date(e.target.value) : undefined })}
-                                  value={dateRange?.to ? dateRange.to.toISOString().split('T')[0] : ''}
-                                />
-                              </div>
-                            </div>
-                            
-                            <div className="mt-4 flex justify-between">
-                              <button
-                                onClick={() => setDateRange(undefined)}
-                                className="text-sm text-gray-400 hover:text-white transition-colors flex items-center gap-1"
-                              >
-                                <X size={12} />
-                                Clear
-                              </button>
-                              <button
-                                onClick={() => setShowDatePicker(false)}
-                                className="bg-gradient-to-r from-amber-500/90 to-amber-600/90 hover:from-amber-500 hover:to-amber-500 text-white px-4 py-1.5 rounded-lg text-sm transition-colors shadow-md border border-amber-500/30 flex items-center gap-1"
-                              >
-                                <CheckCircle size={12} />
-                                Apply
-                              </button>
                             </div>
                           </div>
                         </div>
