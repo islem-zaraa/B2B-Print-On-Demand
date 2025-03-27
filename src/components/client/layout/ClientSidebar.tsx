@@ -2,20 +2,25 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
-  Grid,
-  PlusCircle
+  Shirt,
+  ShoppingBag,
+  History,
+  FileText
 } from 'lucide-react';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Overview', path: '/client' },
-  { icon: PlusCircle, label: 'Add new order', path: '/client/templates' }
+  { icon: Shirt, label: 'Product Catalog', path: '/client/products' },
+  { icon: ShoppingBag, label: 'My Orders', path: '/client/orders' },
+  { icon: History, label: 'Order History', path: '/client/order-history' },
+  { icon: FileText, label: 'Invoices', path: '/client/invoices' }
 ];
 
 export default function ClientSidebar() {
   const location = useLocation();
 
   return (
-    <aside className="w-64 border-r border-green-500/10 backdrop-blur-xl bg-black/30">
+    <aside className="w-64 border-r border-green-500/10 backdrop-blur-xl bg-black/30 overflow-y-auto">
       <div className="p-6">
         <Link to="/client" className="flex items-center gap-2 mb-8">
           <span className="text-2xl font-bold text-green-500">PrintFlow</span>
