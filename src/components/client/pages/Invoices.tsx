@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Card, Title, Text, Table, TableRow, TableCell, TableHead, TableHeaderCell, TableBody, Badge, Grid, Flex } from '@tremor/react';
-import { Download, Search, Filter, Eye, FileText, CreditCard, X, Users, Calendar, CalendarClock, Building, Receipt, CheckCircle } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Card, Title, Text, Table, TableRow, TableCell, TableHead, TableHeaderCell, TableBody, Badge, Grid, Flex, DateRangePicker, DateRangePickerValue, Button, Select, SelectItem } from '@tremor/react';
+import { Download, Search, Filter, Eye, FileText, CreditCard, X, Users, Calendar, CalendarClock, Building, Receipt, CheckCircle, ChevronDown, CalendarRange } from 'lucide-react';
 
 // Enhanced sample invoices data with details for the modal
 const invoices = [
@@ -185,6 +185,51 @@ const invoices = [
 export default function Invoices() {
   const [selectedInvoice, setSelectedInvoice] = useState<typeof invoices[0] | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [showFilterPanel, setShowFilterPanel] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('All');
+  const [paymentMethodFilter, setPaymentMethodFilter] = useState<string>('All');
+  const [dateRange, setDateRange] = useState<DateRangePickerValue>();
+  const [filteredInvoices, setFilteredInvoices] = useState(invoices);
+
+  // Apply filters when any filter changes
+  useEffect(() => {
+    let results = [...invoices];
+    
+    // Apply search query filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      results = results.filter(invoice => 
+        invoice.id.toLowerCase().includes(query) ||
+        invoice.orderRef.toLowerCase().includes(query) ||
+        invoice.amount.toLowerCase().includes(query) ||
+        invoice.paymentMethod.toLowerCase().includes(query)
+      );
+    }
+    
+    // Apply status filter
+    if (statusFilter !== 'All') {
+      results = results.filter(invoice => invoice.status === statusFilter);
+    }
+    
+    // Apply payment method filter
+    if (paymentMethodFilter !== 'All') {
+      results = results.filter(invoice => invoice.paymentMethod === paymentMethodFilter);
+    }
+    
+    // Apply date range filter
+    if (dateRange?.from && dateRange?.to) {
+      const fromDate = new Date(dateRange.from);
+      const toDate = new Date(dateRange.to);
+      
+      results = results.filter(invoice => {
+        const invoiceDate = new Date(invoice.date);
+        return invoiceDate >= fromDate && invoiceDate <= toDate;
+      });
+    }
+    
+    setFilteredInvoices(results);
+  }, [searchQuery, statusFilter, paymentMethodFilter, dateRange]);
 
   const openInvoiceDetails = (invoice: typeof invoices[0]) => {
     setSelectedInvoice(invoice);
@@ -194,6 +239,20 @@ export default function Invoices() {
   const closeModal = () => {
     setShowDetailsModal(false);
   };
+
+  const toggleFilterPanel = () => {
+    setShowFilterPanel(!showFilterPanel);
+  };
+
+  const clearFilters = () => {
+    setSearchQuery('');
+    setStatusFilter('All');
+    setPaymentMethodFilter('All');
+    setDateRange(undefined);
+  };
+
+  // Extract unique payment methods for filter options
+  const paymentMethods = ['All', ...Array.from(new Set(invoices.map(invoice => invoice.paymentMethod)))];
 
   return (
     <div className="space-y-6">
@@ -211,7 +270,7 @@ export default function Invoices() {
             </div>
             <div>
               <Text className="text-gray-400">Total Invoices</Text>
-              <Title className="text-white">15</Title>
+              <Title className="text-white">{invoices.length}</Title>
             </div>
           </Flex>
         </Card>
@@ -223,7 +282,15 @@ export default function Invoices() {
             </div>
             <div>
               <Text className="text-gray-400">Pending Payments</Text>
-              <Title className="text-white">$3,000.00</Title>
+              <Title className="text-white">
+                {invoices
+                  .filter(inv => inv.status === 'Pending')
+                  .reduce((total, inv) => {
+                    const amount = parseFloat(inv.amount.replace('$', '').replace(',', ''));
+                    return total + amount;
+                  }, 0)
+                  .toLocaleString('en-US', { style: 'currency', currency: 'USD' })}
+              </Title>
             </div>
           </Flex>
         </Card>
@@ -248,15 +315,143 @@ export default function Invoices() {
             <input
               type="text"
               placeholder="Search invoices..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full bg-gray-900 border border-gray-700 text-white rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-green-500"
             />
             <Search className="absolute left-3 top-2.5 text-gray-500" size={18} />
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-2.5 text-gray-500 hover:text-white"
+              >
+                <X size={18} />
+              </button>
+            )}
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-gray-800 text-white rounded-lg hover:bg-gray-700 transition-all">
+          <button 
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg transition-all ${
+              showFilterPanel ? 'bg-blue-500 text-white' : 'bg-gray-800 text-white hover:bg-gray-700'
+            }`}
+            onClick={toggleFilterPanel}
+          >
             <Filter size={18} />
             Filter
+            <ChevronDown size={16} className={`transform transition-transform ${showFilterPanel ? 'rotate-180' : ''}`} />
           </button>
         </Flex>
+        
+        {/* Filter Panel */}
+        {showFilterPanel && (
+          <div className="mt-4 border-t border-gray-800 pt-4 animate-in slide-in-from-top duration-200">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <Text className="text-gray-400 mb-2 flex items-center gap-1">
+                  <span>Status</span>
+                </Text>
+                <Select 
+                  value={statusFilter} 
+                  onValueChange={setStatusFilter}
+                  className="bg-gray-900 border-gray-700 text-white"
+                >
+                  <SelectItem value="All">All Statuses</SelectItem>
+                  <SelectItem value="Paid">Paid</SelectItem>
+                  <SelectItem value="Pending">Pending</SelectItem>
+                </Select>
+              </div>
+              
+              <div>
+                <Text className="text-gray-400 mb-2 flex items-center gap-1">
+                  <span>Payment Method</span>
+                </Text>
+                <Select 
+                  value={paymentMethodFilter} 
+                  onValueChange={setPaymentMethodFilter}
+                  className="bg-gray-900 border-gray-700 text-white"
+                >
+                  {paymentMethods.map((method) => (
+                    <SelectItem key={method} value={method}>
+                      {method}
+                    </SelectItem>
+                  ))}
+                </Select>
+              </div>
+              
+              <div>
+                <Text className="text-gray-400 mb-2 flex items-center gap-1">
+                  <CalendarRange size={16} />
+                  <span>Date Range</span>
+                </Text>
+                <DateRangePicker
+                  value={dateRange}
+                  onValueChange={setDateRange}
+                  className="bg-gray-900 border-gray-700 text-white"
+                  enableSelect={true}
+                />
+              </div>
+            </div>
+            
+            <Flex justifyContent="end" className="mt-4">
+              <Button 
+                onClick={clearFilters}
+                className="bg-gray-800 text-white hover:bg-gray-700 mr-2"
+              >
+                Clear Filters
+              </Button>
+              <Button 
+                onClick={toggleFilterPanel}
+                className="bg-blue-500 text-white hover:bg-blue-600"
+              >
+                Apply Filters
+              </Button>
+            </Flex>
+            
+            {/* Filter Results Summary */}
+            {(statusFilter !== 'All' || paymentMethodFilter !== 'All' || dateRange?.from || searchQuery) && (
+              <div className="mt-4 pt-4 border-t border-gray-800">
+                <Flex>
+                  <Text className="text-gray-400">
+                    Showing {filteredInvoices.length} of {invoices.length} invoices
+                  </Text>
+                  <div className="flex flex-wrap gap-2">
+                    {statusFilter !== 'All' && (
+                      <Badge className="bg-gray-800 text-white">
+                        Status: {statusFilter}
+                        <button onClick={() => setStatusFilter('All')} className="ml-1 text-gray-400 hover:text-white">
+                          <X size={14} />
+                        </button>
+                      </Badge>
+                    )}
+                    {paymentMethodFilter !== 'All' && (
+                      <Badge className="bg-gray-800 text-white">
+                        Payment: {paymentMethodFilter}
+                        <button onClick={() => setPaymentMethodFilter('All')} className="ml-1 text-gray-400 hover:text-white">
+                          <X size={14} />
+                        </button>
+                      </Badge>
+                    )}
+                    {dateRange?.from && dateRange?.to && (
+                      <Badge className="bg-gray-800 text-white">
+                        Date: {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
+                        <button onClick={() => setDateRange(undefined)} className="ml-1 text-gray-400 hover:text-white">
+                          <X size={14} />
+                        </button>
+                      </Badge>
+                    )}
+                    {searchQuery && (
+                      <Badge className="bg-gray-800 text-white">
+                        Search: "{searchQuery}"
+                        <button onClick={() => setSearchQuery('')} className="ml-1 text-gray-400 hover:text-white">
+                          <X size={14} />
+                        </button>
+                      </Badge>
+                    )}
+                  </div>
+                </Flex>
+              </div>
+            )}
+          </div>
+        )}
       </Card>
 
       {/* Invoices Table */}
@@ -276,47 +471,61 @@ export default function Invoices() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {invoices.map((invoice) => (
-                <TableRow key={invoice.id} className="border-b border-gray-800">
-                  <TableCell className="text-white font-medium">{invoice.id}</TableCell>
-                  <TableCell className="text-white">{invoice.date}</TableCell>
-                  <TableCell className="text-white">{invoice.dueDate}</TableCell>
-                  <TableCell className="text-white">{invoice.amount}</TableCell>
-                  <TableCell>
-                    <Badge
-                      color={invoice.status === 'Paid' ? 'green' : 'amber'}
-                      className={`${
-                        invoice.status === 'Paid' 
-                          ? 'bg-green-500/20 text-green-500' 
-                          : 'bg-amber-500/20 text-amber-500'
-                      }`}
-                    >
-                      {invoice.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-white">{invoice.orderRef}</TableCell>
-                  <TableCell className="text-white">{invoice.paymentMethod}</TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
-                      <button 
-                        className="text-blue-500 hover:text-blue-400 transition-colors flex items-center gap-1"
-                        title="View Invoice"
-                        onClick={() => openInvoiceDetails(invoice)}
+              {filteredInvoices.length > 0 ? (
+                filteredInvoices.map((invoice) => (
+                  <TableRow key={invoice.id} className="border-b border-gray-800">
+                    <TableCell className="text-white font-medium">{invoice.id}</TableCell>
+                    <TableCell className="text-white">{invoice.date}</TableCell>
+                    <TableCell className="text-white">{invoice.dueDate}</TableCell>
+                    <TableCell className="text-white">{invoice.amount}</TableCell>
+                    <TableCell>
+                      <Badge
+                        color={invoice.status === 'Paid' ? 'green' : 'amber'}
+                        className={`${
+                          invoice.status === 'Paid' 
+                            ? 'bg-green-500/20 text-green-500' 
+                            : 'bg-amber-500/20 text-amber-500'
+                        }`}
                       >
-                        <Eye size={16} />
-                        <span>View</span>
-                      </button>
-                      <button 
-                        className="text-green-500 hover:text-green-400 transition-colors flex items-center gap-1"
-                        title="Download Invoice"
-                      >
-                        <Download size={16} />
-                        <span>Download</span>
+                        {invoice.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-white">{invoice.orderRef}</TableCell>
+                    <TableCell className="text-white">{invoice.paymentMethod}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <button 
+                          className="text-blue-500 hover:text-blue-400 transition-colors flex items-center gap-1"
+                          title="View Invoice"
+                          onClick={() => openInvoiceDetails(invoice)}
+                        >
+                          <Eye size={16} />
+                          <span>View</span>
+                        </button>
+                        <button 
+                          className="text-green-500 hover:text-green-400 transition-colors flex items-center gap-1"
+                          title="Download Invoice"
+                        >
+                          <Download size={16} />
+                          <span>Download</span>
+                        </button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={8} className="text-center py-6">
+                    <div className="flex flex-col items-center justify-center text-gray-500">
+                      <FileText size={36} className="mb-2" />
+                      <Text>No invoices match your search criteria</Text>
+                      <button onClick={clearFilters} className="text-blue-500 hover:underline mt-2">
+                        Clear all filters
                       </button>
                     </div>
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </div>
@@ -404,7 +613,6 @@ export default function Invoices() {
                       <Text className="text-gray-400">123 Print Avenue</Text>
                       <Text className="text-gray-400">Suite 500</Text>
                       <Text className="text-gray-400">Chicago, IL 60601</Text>
-                      <Text className="text-gray-400">United States</Text>
                       <Text className="text-gray-400 mt-2">billing@printflow.com</Text>
                       <Text className="text-gray-400">+1 (555) 123-4567</Text>
                     </div>
