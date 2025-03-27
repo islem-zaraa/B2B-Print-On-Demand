@@ -331,37 +331,6 @@ export default function Invoices() {
     setSelectedPreset(null);
   };
 
-  // Add a function to update the dropdown positions on scroll
-  const updateDropdownPositions = useCallback(() => {
-    if (showStatusDropdown && statusButtonRef.current) {
-      const rect = statusButtonRef.current.getBoundingClientRect();
-      setStatusDropdownRect(rect);
-    }
-    
-    if (showPaymentDropdown && paymentButtonRef.current) {
-      const rect = paymentButtonRef.current.getBoundingClientRect();
-      setPaymentDropdownRect(rect);
-    }
-    
-    if (showDatePicker && dateButtonRef.current) {
-      const rect = dateButtonRef.current.getBoundingClientRect();
-      setDateDropdownRect(rect);
-    }
-  }, [showStatusDropdown, showPaymentDropdown, showDatePicker]);
-
-  // Add scroll event listener
-  useEffect(() => {
-    if (showStatusDropdown || showPaymentDropdown || showDatePicker) {
-      window.addEventListener('scroll', updateDropdownPositions, { passive: true });
-      window.addEventListener('resize', updateDropdownPositions, { passive: true });
-      
-      return () => {
-        window.removeEventListener('scroll', updateDropdownPositions);
-        window.removeEventListener('resize', updateDropdownPositions);
-      };
-    }
-  }, [showStatusDropdown, showPaymentDropdown, showDatePicker, updateDropdownPositions]);
-
   return (
     <div className="space-y-6">
       <div>
@@ -520,8 +489,8 @@ export default function Invoices() {
                             <div 
                               className="pointer-events-auto absolute"
                               style={{
-                                top: `${statusDropdownRect.bottom + window.scrollY}px`,
-                                left: `${statusDropdownRect.left + window.scrollX}px`,
+                                top: `${statusDropdownRect.bottom}px`,
+                                left: `${statusDropdownRect.left}px`,
                                 width: `${statusDropdownRect.width}px`
                               }}
                             >
@@ -628,8 +597,8 @@ export default function Invoices() {
                             <div 
                               className="pointer-events-auto absolute"
                               style={{
-                                top: `${paymentDropdownRect.bottom + window.scrollY}px`,
-                                left: `${paymentDropdownRect.left + window.scrollX}px`,
+                                top: `${paymentDropdownRect.bottom}px`,
+                                left: `${paymentDropdownRect.left}px`,
                                 width: `${paymentDropdownRect.width}px`
                               }}
                             >
@@ -736,8 +705,8 @@ export default function Invoices() {
                             <div 
                               className="pointer-events-auto absolute"
                               style={{
-                                top: `${dateDropdownRect.bottom + window.scrollY}px`,
-                                left: `${dateDropdownRect.left + window.scrollX}px`,
+                                top: `${dateDropdownRect.bottom}px`,
+                                left: `${dateDropdownRect.left}px`,
                                 width: `${dateDropdownRect.width}px`
                               }}
                             >
