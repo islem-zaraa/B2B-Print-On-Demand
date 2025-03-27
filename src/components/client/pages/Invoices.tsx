@@ -471,10 +471,9 @@ export default function Invoices() {
                           <div 
                             className="pointer-events-auto absolute" 
                             style={{
-                              top: statusButtonRef.current ? `${statusButtonRef.current.getBoundingClientRect().top - 10}px` : '0',
+                              top: statusButtonRef.current ? `${statusButtonRef.current.getBoundingClientRect().bottom + 10}px` : '0',
                               left: statusButtonRef.current ? `${statusButtonRef.current.getBoundingClientRect().left}px` : '0',
-                              width: statusButtonRef.current ? `${statusButtonRef.current.getBoundingClientRect().width}px` : '250px',
-                              transform: 'translateY(-100%)'
+                              width: statusButtonRef.current ? `${statusButtonRef.current.getBoundingClientRect().width}px` : '250px'
                             }}
                           >
                             <div className="bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.2))' }}>
@@ -576,10 +575,9 @@ export default function Invoices() {
                           <div 
                             className="pointer-events-auto absolute" 
                             style={{
-                              top: paymentButtonRef.current ? `${paymentButtonRef.current.getBoundingClientRect().top - 10}px` : '0',
+                              top: paymentButtonRef.current ? `${paymentButtonRef.current.getBoundingClientRect().bottom + 10}px` : '0',
                               left: paymentButtonRef.current ? `${paymentButtonRef.current.getBoundingClientRect().left}px` : '0',
-                              width: paymentButtonRef.current ? `${paymentButtonRef.current.getBoundingClientRect().width}px` : '250px',
-                              transform: 'translateY(-100%)'
+                              width: paymentButtonRef.current ? `${paymentButtonRef.current.getBoundingClientRect().width}px` : '250px'
                             }}
                           >
                             <div className="bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(59, 130, 246, 0.2))' }}>
@@ -681,10 +679,9 @@ export default function Invoices() {
                           <div 
                             className="pointer-events-auto absolute" 
                             style={{
-                              top: dateButtonRef.current ? `${dateButtonRef.current.getBoundingClientRect().top - 10}px` : '0',
+                              top: dateButtonRef.current ? `${dateButtonRef.current.getBoundingClientRect().bottom + 10}px` : '0',
                               left: dateButtonRef.current ? `${dateButtonRef.current.getBoundingClientRect().left}px` : '0',
-                              width: dateButtonRef.current ? `${dateButtonRef.current.getBoundingClientRect().width}px` : '250px',
-                              transform: 'translateY(-100%)'
+                              width: dateButtonRef.current ? `${dateButtonRef.current.getBoundingClientRect().width}px` : '250px'
                             }}
                           >
                             <div className="bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 0.2))' }}>
