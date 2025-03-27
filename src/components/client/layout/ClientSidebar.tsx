@@ -3,14 +3,12 @@ import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   Image, 
-  Grid, 
-  Palette
+  Grid
 } from 'lucide-react';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Overview', path: '/client' },
   { icon: Image, label: 'My Designs', path: '/client/designs' },
-  { icon: Palette, label: 'Design Studio', path: '/client/design-studio' },
   { icon: Grid, label: 'Templates', path: '/client/templates' }
 ];
 
