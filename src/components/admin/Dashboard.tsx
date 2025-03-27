@@ -1,7 +1,6 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import AdminLayout from './layout/AdminLayout';
-import Overview from './pages/Overview';
 import Users from './pages/Users';
 import Products from './pages/Products';
 import Orders from './pages/Orders';
@@ -15,8 +14,7 @@ export default function Dashboard() {
   return (
     <Routes>
       <Route element={<AdminLayout />}>
-        <Route index element={<Overview />} />
-        <Route path="panel" element={<AdminPanel />} />
+        <Route index element={<AdminPanel />} />
         <Route path="users" element={<Users />} />
         <Route path="products" element={<Products />} />
         <Route path="orders" element={<Orders />} />

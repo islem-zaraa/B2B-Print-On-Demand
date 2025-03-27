@@ -1,13 +1,12 @@
 import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { 
-  LayoutDashboard, Users, Package, ShoppingCart, 
-  BarChart2, HeadphonesIcon, Settings, FileText, Shield
+  Shield, Users, Package, ShoppingCart, 
+  BarChart2, HeadphonesIcon, Settings, FileText
 } from 'lucide-react';
 
 const menuItems = [
-  { icon: LayoutDashboard, label: 'Overview', path: '/admin' },
-  { icon: Shield, label: 'Admin Panel', path: '/admin/panel' },
+  { icon: Shield, label: 'Admin Panel', path: '/admin' },
   { icon: Users, label: 'Users', path: '/admin/users' },
   { icon: Package, label: 'Products', path: '/admin/products' },
   { icon: ShoppingCart, label: 'Orders', path: '/admin/orders' },
