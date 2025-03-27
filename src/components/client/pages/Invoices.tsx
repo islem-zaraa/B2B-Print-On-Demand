@@ -405,7 +405,7 @@ export default function Invoices() {
         {/* Enhanced Filter Panel */}
         {showFilterPanel && (
           <div className="mt-5 pt-4 animate-in fade-in-50 slide-in-from-top-5 duration-300">
-            <div className="relative overflow-hidden rounded-xl border border-gray-800/60 bg-gradient-to-b from-gray-900/90 to-black/95 shadow-xl">
+            <div className="relative overflow-hidden rounded-xl border border-gray-800/60 bg-gradient-to-b from-gray-900/90 to-black/95 shadow-xl z-30">
               {/* Background patterns */}
               <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500/20 via-green-500/20 to-blue-500/20"></div>
               <div className="absolute inset-0 bg-grid-white/[0.02] bg-[length:20px_20px] pointer-events-none"></div>
@@ -460,7 +460,7 @@ export default function Invoices() {
                       
                       {/* Status dropdown */}
                       {showStatusDropdown && (
-                        <div className="absolute z-20 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl">
+                        <div className="absolute z-50 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(34, 197, 94, 0.2))' }}>
                           <div className="p-4">
                             <div className="flex items-center justify-between mb-4">
                               <Text className="text-white font-medium">Select Status</Text>
@@ -552,7 +552,7 @@ export default function Invoices() {
                       
                       {/* Payment method dropdown */}
                       {showPaymentDropdown && (
-                        <div className="absolute z-20 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl">
+                        <div className="absolute z-50 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(59, 130, 246, 0.2))' }}>
                           <div className="p-4">
                             <div className="flex items-center justify-between mb-4">
                               <Text className="text-white font-medium">Select Payment Method</Text>
@@ -640,7 +640,7 @@ export default function Invoices() {
                       
                       {/* Date picker dropdown */}
                       {showDatePicker && (
-                        <div className="absolute z-20 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl">
+                        <div className="absolute z-50 mt-2 w-full bg-black/95 border border-gray-800/80 rounded-xl shadow-xl overflow-hidden backdrop-blur-xl" style={{ filter: 'drop-shadow(0 0 10px rgba(245, 158, 11, 0.2))' }}>
                           <div className="p-4 border-b border-gray-800/60">
                             <div className="flex items-center justify-between mb-4">
                               <Text className="text-white font-medium">Select Date Range</Text>
