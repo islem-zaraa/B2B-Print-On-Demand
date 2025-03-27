@@ -189,9 +189,9 @@ export default function Settings() {
                       className="bg-green-500 text-black px-6 py-2 rounded-lg hover:bg-green-400 transition-all flex items-center gap-2"
                     >
                       <Save size={20} />
-                      Save Changes
-                    </button>
-                  </div>
+          Save Changes
+        </button>
+      </div>
                 </form>
               </div>
             )}

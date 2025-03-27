@@ -68,7 +68,7 @@ This B2B Print-On-Demand platform provides businesses with a streamlined solutio
    ```bash
    npm run dev
    ```
-   
+
    The application will be available at http://localhost:5173 (or another port if 5173 is in use)
 
 ## 🗺️ Key Routes
