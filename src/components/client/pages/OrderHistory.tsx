@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Title, Text, Table, TableRow, TableCell, TableHead, TableHeaderCell, TableBody, Badge, Grid, Flex, DateRangePickerValue } from '@tremor/react';
 import { Download, Search, Calendar, ChevronDown, CalendarRange, X, ShoppingBag, Package, MapPin, Phone, Mail, CreditCard, Copy } from 'lucide-react';
 
@@ -232,6 +232,37 @@ export default function OrderHistory() {
   const [selectedPreset, setSelectedPreset] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<typeof orderHistory[0] | null>(null);
   const [showDetailsModal, setShowDetailsModal] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredOrders, setFilteredOrders] = useState(orderHistory);
+
+  // Apply filters when search query or date range changes
+  useEffect(() => {
+    let results = [...orderHistory];
+    
+    // Apply search query filter
+    if (searchQuery) {
+      const query = searchQuery.toLowerCase();
+      results = results.filter(order => 
+        order.id.toLowerCase().includes(query) ||
+        order.items.toLowerCase().includes(query) ||
+        order.total.toLowerCase().includes(query) ||
+        order.invoice.toLowerCase().includes(query)
+      );
+    }
+    
+    // Apply date range filter
+    if (dateRange.from && dateRange.to) {
+      const fromDate = new Date(dateRange.from);
+      const toDate = new Date(dateRange.to);
+      
+      results = results.filter(order => {
+        const orderDate = new Date(order.date);
+        return orderDate >= fromDate && orderDate <= toDate;
+      });
+    }
+    
+    setFilteredOrders(results);
+  }, [searchQuery, dateRange]);
 
   const formatDate = (date: Date | undefined) => {
     if (!date) return '';
@@ -294,6 +325,39 @@ export default function OrderHistory() {
     // Could add a toast notification here
   };
 
+  const exportToCSV = () => {
+    // Create CSV content
+    const headers = ['Order ID', 'Date', 'Items', 'Total', 'Status', 'Invoice'];
+    const csvRows = [headers];
+    
+    // Add filtered data rows
+    filteredOrders.forEach(order => {
+      const row = [
+        order.id,
+        order.date,
+        order.items,
+        order.total,
+        order.status,
+        order.invoice
+      ];
+      csvRows.push(row);
+    });
+    
+    // Convert to CSV string
+    const csvContent = csvRows.map(row => row.join(',')).join('\n');
+    
+    // Create and download the file
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.setAttribute('href', url);
+    link.setAttribute('download', `order_history_${new Date().toISOString().slice(0, 10)}.csv`);
+    link.style.visibility = 'hidden';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="space-y-6">
       <div>
@@ -310,8 +374,18 @@ export default function OrderHistory() {
               type="text"
               placeholder="Search by order ID or item name"
               className="w-full bg-gray-900 border border-gray-700 text-white rounded-lg pl-10 pr-4 py-2 focus:outline-none focus:border-green-500"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
             <Search className="absolute left-3 top-2.5 text-gray-500" size={18} />
+            {searchQuery && (
+              <button 
+                onClick={() => setSearchQuery('')}
+                className="absolute right-3 top-2.5 text-gray-500 hover:text-white transition-colors"
+              >
+                <X size={16} />
+              </button>
+            )}
           </div>
         </Card>
         
@@ -414,7 +488,10 @@ export default function OrderHistory() {
         <Card className="bg-black border border-gray-800 rounded-xl">
           <Text className="text-gray-400 mb-2">Export</Text>
           <Flex>
-            <button className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 flex items-center gap-2 transition-all">
+            <button 
+              className="bg-gray-800 text-white px-4 py-2 rounded-lg hover:bg-gray-700 flex items-center gap-2 transition-all"
+              onClick={exportToCSV}
+            >
               <Download size={18} />
               Export to CSV
             </button>
@@ -438,30 +515,50 @@ export default function OrderHistory() {
               </TableRow>
             </TableHead>
             <TableBody>
-              {orderHistory.map((order) => (
-                <TableRow key={order.id} className="border-b border-gray-800">
-                  <TableCell className="text-white font-medium">{order.id}</TableCell>
-                  <TableCell className="text-white">{order.date}</TableCell>
-                  <TableCell className="text-white">{order.items}</TableCell>
-                  <TableCell className="text-white">{order.total}</TableCell>
-                  <TableCell>
-                    <Badge color="green" className="bg-green-500/20 text-green-500">
-                      {order.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="text-white">{order.invoice}</TableCell>
-                  <TableCell>
-                    <div className="flex gap-2">
+              {filteredOrders.length > 0 ? (
+                filteredOrders.map((order) => (
+                  <TableRow key={order.id} className="border-b border-gray-800">
+                    <TableCell className="text-white font-medium">{order.id}</TableCell>
+                    <TableCell className="text-white">{order.date}</TableCell>
+                    <TableCell className="text-white">{order.items}</TableCell>
+                    <TableCell className="text-white">{order.total}</TableCell>
+                    <TableCell>
+                      <Badge color="green" className="bg-green-500/20 text-green-500">
+                        {order.status}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="text-white">{order.invoice}</TableCell>
+                    <TableCell>
+                      <div className="flex gap-2">
+                        <button 
+                          className="text-green-500 hover:text-green-400 transition-colors"
+                          onClick={() => openOrderDetails(order)}
+                        >
+                          View
+                        </button>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell colSpan={7} className="text-center py-6">
+                    <div className="flex flex-col items-center justify-center text-gray-500">
+                      <Package size={36} className="mb-2" />
+                      <Text>No orders match your search criteria</Text>
                       <button 
-                        className="text-green-500 hover:text-green-400 transition-colors"
-                        onClick={() => openOrderDetails(order)}
+                        onClick={() => {
+                          setSearchQuery('');
+                          clearDateFilter();
+                        }} 
+                        className="text-green-500 hover:underline mt-2"
                       >
-                        View
+                        Clear all filters
                       </button>
                     </div>
                   </TableCell>
                 </TableRow>
-              ))}
+              )}
             </TableBody>
           </Table>
         </div>
@@ -469,29 +566,32 @@ export default function OrderHistory() {
 
       {/* Order Details Modal */}
       {showDetailsModal && selectedOrder && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-black border border-gray-800 rounded-xl shadow-lg w-full max-w-4xl max-h-[90vh] overflow-y-auto">
-            <div className="border-b border-gray-800 p-4 flex justify-between items-center sticky top-0 bg-black">
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-md flex items-center justify-center z-50 p-4 animate-in fade-in duration-300">
+          <div className="bg-gradient-to-b from-gray-900 to-black border-0 rounded-2xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto relative">
+            {/* Gradient border effect */}
+            <div className="absolute inset-0 rounded-2xl p-[1px] bg-gradient-to-r from-green-500/40 via-blue-500/40 to-green-500/40 -z-10"></div>
+            
+            <div className="border-b border-gray-800/60 p-4 flex justify-between items-center sticky top-0 bg-gradient-to-r from-black/90 to-gray-900/90 backdrop-blur-sm z-10 rounded-t-2xl">
               <div className="flex items-center gap-3">
-                <div className="p-2 rounded-lg bg-green-500/10">
-                  <Package className="text-green-500 h-6 w-6" />
+                <div className="p-2 rounded-lg bg-gradient-to-br from-green-500/20 to-green-500/10">
+                  <Package className="text-green-400 h-6 w-6 drop-shadow-md" />
                 </div>
                 <div>
                   <Text className="text-gray-400 text-sm">Order Details</Text>
-                  <Title className="text-white">{selectedOrder.id}</Title>
+                  <Title className="text-white text-xl drop-shadow-md">{selectedOrder.id}</Title>
                 </div>
               </div>
               <button 
                 onClick={closeModal} 
-                className="p-2 text-gray-400 hover:text-white transition-colors"
+                className="p-2 rounded-full text-gray-400 hover:text-white hover:bg-gray-800/80 transition-all"
               >
                 <X size={20} />
               </button>
             </div>
             
-            <div className="p-6 space-y-6">
+            <div className="p-8 space-y-8">
               {/* Order Summary */}
-              <Card className="bg-black border border-gray-800 rounded-xl p-4">
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
                 <div className="grid md:grid-cols-4 gap-4">
                   <div>
                     <Text className="text-gray-400">Order Date</Text>
@@ -503,7 +603,7 @@ export default function OrderHistory() {
                   </div>
                   <div>
                     <Text className="text-gray-400">Status</Text>
-                    <Badge color="green" className="bg-green-500/20 text-green-500">
+                    <Badge color="green" className="bg-green-500/20 text-green-400 shadow-sm">
                       {selectedOrder.status}
                     </Badge>
                   </div>
@@ -515,8 +615,10 @@ export default function OrderHistory() {
               </Card>
               
               {/* Customer Details */}
-              <Card className="bg-black border border-gray-800 rounded-xl p-4">
-                <Title className="text-white text-lg mb-4">Customer Information</Title>
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-blue-900/20 hover:border-blue-500/30">
+                <Title className="text-white text-lg mb-4 inline-flex items-center">
+                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Customer Information</span>
+                </Title>
                 <div className="space-y-4">
                   <div className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-8">
                     <div className="flex-1">
@@ -531,21 +633,21 @@ export default function OrderHistory() {
                   
                   <div className="grid sm:grid-cols-3 gap-4">
                     <div className="flex items-start gap-2">
-                      <Mail className="text-gray-400 h-5 w-5 mt-0.5" />
+                      <Mail className="text-blue-400 h-5 w-5 mt-0.5" />
                       <div>
                         <Text className="text-gray-400">Email</Text>
                         <Text className="text-white">{selectedOrder.orderDetails.customer.email}</Text>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <Phone className="text-gray-400 h-5 w-5 mt-0.5" />
+                      <Phone className="text-blue-400 h-5 w-5 mt-0.5" />
                       <div>
                         <Text className="text-gray-400">Phone</Text>
                         <Text className="text-white">{selectedOrder.orderDetails.customer.phone}</Text>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <MapPin className="text-gray-400 h-5 w-5 mt-0.5" />
+                      <MapPin className="text-blue-400 h-5 w-5 mt-0.5" />
                       <div>
                         <Text className="text-gray-400">Address</Text>
                         <Text className="text-white">{selectedOrder.orderDetails.customer.address}</Text>
@@ -556,12 +658,14 @@ export default function OrderHistory() {
               </Card>
               
               {/* Order Items */}
-              <Card className="bg-black border border-gray-800 rounded-xl p-4">
-                <Title className="text-white text-lg mb-4">Order Items</Title>
+              <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.01] hover:shadow-green-900/20 hover:border-green-500/30">
+                <Title className="text-white text-lg mb-4 inline-flex items-center">
+                  <span className="bg-gradient-to-r from-green-400 to-blue-400 bg-clip-text text-transparent">Order Items</span>
+                </Title>
                 <div className="overflow-x-auto">
                   <Table>
                     <TableHead>
-                      <TableRow className="border-b border-gray-800">
+                      <TableRow className="border-b border-gray-800/60">
                         <TableHeaderCell className="text-gray-400">Product</TableHeaderCell>
                         <TableHeaderCell className="text-gray-400">Quantity</TableHeaderCell>
                         <TableHeaderCell className="text-gray-400">Color</TableHeaderCell>
@@ -572,7 +676,7 @@ export default function OrderHistory() {
                     </TableHead>
                     <TableBody>
                       {selectedOrder.orderDetails.products.map((product, i) => (
-                        <TableRow key={i} className="border-b border-gray-800">
+                        <TableRow key={i} className="border-b border-gray-800/60 hover:bg-gray-900/40 transition-colors">
                           <TableCell className="text-white font-medium">{product.name}</TableCell>
                           <TableCell className="text-white">{product.quantity}</TableCell>
                           <TableCell className="text-white">{product.color}</TableCell>
@@ -585,7 +689,7 @@ export default function OrderHistory() {
                   </Table>
                 </div>
                 {selectedOrder.orderDetails.notes && (
-                  <div className="mt-4">
+                  <div className="mt-4 bg-gray-900/40 p-3 rounded-lg">
                     <Text className="text-white font-medium">Order Notes:</Text>
                     <Text className="text-gray-400 mt-1">{selectedOrder.orderDetails.notes}</Text>
                   </div>
@@ -594,10 +698,10 @@ export default function OrderHistory() {
               
               {/* Payment and Shipping Details */}
               <div className="grid md:grid-cols-2 gap-6">
-                <Card className="bg-black border border-gray-800 rounded-xl p-4">
+                <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.02] hover:shadow-green-900/20 hover:border-green-500/30">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-full bg-green-500/10">
-                      <CreditCard className="text-green-500 h-5 w-5" />
+                    <div className="p-2 rounded-full bg-gradient-to-br from-green-500/20 to-green-500/10">
+                      <CreditCard className="text-green-400 h-5 w-5 drop-shadow-md" />
                     </div>
                     <Title className="text-white text-lg">Payment Details</Title>
                   </div>
@@ -608,7 +712,7 @@ export default function OrderHistory() {
                     </div>
                     <div>
                       <Text className="text-gray-400">Payment Status</Text>
-                      <Badge color="green" className="bg-green-500/20 text-green-500">
+                      <Badge color="green" className="bg-green-500/20 text-green-400">
                         {selectedOrder.orderDetails.payment.status}
                       </Badge>
                     </div>
@@ -619,10 +723,10 @@ export default function OrderHistory() {
                   </div>
                 </Card>
                 
-                <Card className="bg-black border border-gray-800 rounded-xl p-4">
+                <Card className="bg-black/60 border border-gray-800/60 rounded-xl p-5 shadow-lg transform transition-all hover:scale-[1.02] hover:shadow-blue-900/20 hover:border-blue-500/30">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-full bg-blue-500/10">
-                      <ShoppingBag className="text-blue-500 h-5 w-5" />
+                    <div className="p-2 rounded-full bg-gradient-to-br from-blue-500/20 to-blue-500/10">
+                      <ShoppingBag className="text-blue-400 h-5 w-5 drop-shadow-md" />
                     </div>
                     <Title className="text-white text-lg">Shipping Details</Title>
                   </div>
@@ -642,7 +746,7 @@ export default function OrderHistory() {
               <Flex justifyContent="end">
                 <button 
                   onClick={closeModal}
-                  className="bg-gray-800 text-white px-6 py-2 rounded-lg hover:bg-gray-700 transition-all"
+                  className="bg-gradient-to-r from-gray-800 to-gray-700 hover:from-gray-700 hover:to-gray-600 text-white px-8 py-2.5 rounded-lg transition-all shadow-lg hover:shadow-gray-900/30"
                 >
                   Close
                 </button>
