@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Title, Text, Tab, TabList, TabGroup, TabPanel, TabPanels, Metric } from '@tremor/react';
 import { Settings, Users, Package, Bell, BarChart3, CheckCircle } from 'lucide-react';
+import NotificationDemo from '../../shared/NotificationDemo';
 
 export default function AdminPanel() {
   const [selectedView, setSelectedView] = useState(0);
@@ -58,6 +59,7 @@ export default function AdminPanel() {
             <Tab className="text-gray-400 data-[state=active]:text-green-500">User Management</Tab>
             <Tab className="text-gray-400 data-[state=active]:text-green-500">Content Moderation</Tab>
             <Tab className="text-gray-400 data-[state=active]:text-green-500">System Logs</Tab>
+            <Tab className="text-gray-400 data-[state=active]:text-green-500">Notifications</Tab>
           </TabList>
           <TabPanels>
             <TabPanel>
@@ -184,6 +186,17 @@ export default function AdminPanel() {
                     <div className="text-gray-400">[2023-04-12 10:01:22] INFO: Database backup completed</div>
                     <div className="text-red-500">[2023-04-12 10:45:08] ERROR: Failed login attempt (IP: 192.168.1.105)</div>
                     <div className="text-gray-400">[2023-04-12 11:02:55] INFO: Security protocols updated</div>
+                  </div>
+                </Card>
+              </div>
+            </TabPanel>
+            <TabPanel>
+              <div className="mt-4">
+                <Card className="bg-gray-900 border border-gray-800 rounded-xl overflow-hidden p-6">
+                  <Title className="text-white text-lg">Notification System</Title>
+                  <Text className="text-gray-400 mt-1">Test and manage platform notifications</Text>
+                  <div className="mt-6">
+                    <NotificationDemo />
                   </div>
                 </Card>
               </div>
