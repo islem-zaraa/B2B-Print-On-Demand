@@ -332,16 +332,16 @@ export default function Invoices() {
           <button 
             className={`flex items-center gap-2 px-5 py-2.5 rounded-lg transition-all shadow-md ml-3 ${
               showFilterPanel 
-                ? 'bg-gradient-to-r from-blue-600/90 to-green-600/90 text-white border border-blue-500/30' 
+                ? 'bg-gradient-to-r from-green-600/90 to-green-500/90 text-white border border-green-500/30' 
                 : 'bg-gradient-to-r from-gray-800 to-gray-900 text-white hover:from-gray-700 hover:to-gray-800 border border-gray-700/50'
             }`}
             onClick={toggleFilterPanel}
           >
-            <Filter size={16} className={showFilterPanel ? 'text-blue-200' : 'text-gray-300'} />
+            <Filter size={16} className={showFilterPanel ? 'text-green-200' : 'text-gray-300'} />
             <span>Filter</span>
             <ChevronDown 
               size={14} 
-              className={`transform transition-transform duration-300 ${showFilterPanel ? 'rotate-180 text-blue-200' : 'text-gray-300'}`} 
+              className={`transform transition-transform duration-300 ${showFilterPanel ? 'rotate-180 text-green-200' : 'text-gray-300'}`} 
             />
           </button>
         </Flex>
@@ -374,36 +374,50 @@ export default function Invoices() {
                 </div>
             
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                  <div className="backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-gray-800/60 shadow-lg">
-                    <Text className="text-gray-300 mb-3 flex items-center gap-2">
-                      <span className="p-1 rounded-md bg-green-500/10">
-                        <CheckCircle size={14} className="text-green-400" />
+                  <div className="backdrop-blur-sm bg-black/30 p-5 rounded-lg border border-gray-800/60 shadow-lg relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent pointer-events-none"></div>
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-green-500/30 to-transparent"></div>
+                    <div className="absolute -bottom-14 -right-14 w-28 h-28 bg-green-500/10 rounded-full blur-xl opacity-60 pointer-events-none"></div>
+                    
+                    <Text className="text-gray-300 mb-3 flex items-center gap-2 relative">
+                      <span className="p-1.5 rounded-md bg-gradient-to-br from-green-500/20 to-green-600/5 shadow-sm">
+                        <CheckCircle size={14} className="text-green-400 drop-shadow-md" />
                       </span>
-                      <span>Status</span>
+                      <span className="font-medium">Invoice Status</span>
                     </Text>
-                    <Select 
-                      value={statusFilter} 
-                      onValueChange={setStatusFilter}
-                      className="bg-gray-900/80 border-gray-800/60 text-white shadow-inner ring-0 ring-offset-0 focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30"
-                    >
-                      <SelectItem value="All">All Statuses</SelectItem>
-                      <SelectItem value="Paid">Paid</SelectItem>
-                      <SelectItem value="Pending">Pending</SelectItem>
-                    </Select>
+                    
+                    <div className="relative mt-2">
+                      <Select 
+                        value={statusFilter} 
+                        onValueChange={setStatusFilter}
+                        className="w-full bg-gray-900/80 border-gray-800/60 text-white shadow-inner ring-0 ring-offset-0 focus:border-green-500/50 focus:ring-1 focus:ring-green-500/30"
+                      >
+                        <SelectItem value="All">All Statuses</SelectItem>
+                        <SelectItem value="Paid">Paid</SelectItem>
+                        <SelectItem value="Pending">Pending</SelectItem>
+                      </Select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <ChevronDown size={14} className="text-green-500/70" />
+                      </div>
+                    </div>
                     
                     {statusFilter !== 'All' && (
-                      <div className="mt-2 flex items-center text-xs">
+                      <div className="mt-3 flex items-center">
                         <Badge className={`${
                           statusFilter === 'Paid' 
-                            ? 'bg-green-500/20 text-green-400 border border-green-500/30' 
-                            : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
-                        } py-0.5 px-2`}
+                            ? 'bg-gradient-to-r from-green-500/20 to-green-600/20 text-green-400 border border-green-500/30 shadow-sm' 
+                            : 'bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-amber-400 border border-amber-500/30 shadow-sm'
+                        } py-1 px-3 rounded-full flex items-center gap-1.5`}
                         >
-                          {statusFilter}
+                          {statusFilter === 'Paid' ? 
+                            <CheckCircle size={12} className="text-green-400" /> : 
+                            <Clock size={12} className="text-amber-400" />
+                          }
+                          <span>{statusFilter}</span>
                         </Badge>
                         <button 
                           onClick={() => setStatusFilter('All')} 
-                          className="ml-2 text-gray-500 hover:text-gray-300"
+                          className="ml-2 p-1 bg-gray-800/50 text-gray-500 hover:text-gray-300 rounded-full hover:bg-gray-800/80 transition-colors"
                         >
                           <X size={12} />
                         </button>
@@ -411,33 +425,44 @@ export default function Invoices() {
                     )}
                   </div>
                   
-                  <div className="backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-gray-800/60 shadow-lg">
-                    <Text className="text-gray-300 mb-3 flex items-center gap-2">
-                      <span className="p-1 rounded-md bg-blue-500/10">
-                        <CreditCard size={14} className="text-blue-400" />
+                  <div className="backdrop-blur-sm bg-black/30 p-5 rounded-lg border border-gray-800/60 shadow-lg relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none"></div>
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-blue-500/30 to-transparent"></div>
+                    <div className="absolute -bottom-14 -right-14 w-28 h-28 bg-blue-500/10 rounded-full blur-xl opacity-60 pointer-events-none"></div>
+                    
+                    <Text className="text-gray-300 mb-3 flex items-center gap-2 relative">
+                      <span className="p-1.5 rounded-md bg-gradient-to-br from-blue-500/20 to-blue-600/5 shadow-sm">
+                        <CreditCard size={14} className="text-blue-400 drop-shadow-md" />
                       </span>
-                      <span>Payment Method</span>
+                      <span className="font-medium">Payment Method</span>
                     </Text>
-                    <Select 
-                      value={paymentMethodFilter} 
-                      onValueChange={setPaymentMethodFilter}
-                      className="bg-gray-900/80 border-gray-800/60 text-white shadow-inner ring-0 ring-offset-0 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30"
-                    >
-                      {paymentMethods.map((method) => (
-                        <SelectItem key={method} value={method}>
-                          {method}
-                        </SelectItem>
-                      ))}
-                    </Select>
+                    
+                    <div className="relative mt-2">
+                      <Select 
+                        value={paymentMethodFilter} 
+                        onValueChange={setPaymentMethodFilter}
+                        className="w-full bg-gray-900/80 border-gray-800/60 text-white shadow-inner ring-0 ring-offset-0 focus:border-blue-500/50 focus:ring-1 focus:ring-blue-500/30"
+                      >
+                        {paymentMethods.map((method) => (
+                          <SelectItem key={method} value={method}>
+                            {method}
+                          </SelectItem>
+                        ))}
+                      </Select>
+                      <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+                        <ChevronDown size={14} className="text-blue-500/70" />
+                      </div>
+                    </div>
                     
                     {paymentMethodFilter !== 'All' && (
-                      <div className="mt-2 flex items-center text-xs">
-                        <Badge className="bg-blue-500/20 text-blue-400 border border-blue-500/30 py-0.5 px-2">
-                          {paymentMethodFilter}
+                      <div className="mt-3 flex items-center">
+                        <Badge className="bg-gradient-to-r from-blue-500/20 to-blue-600/20 text-blue-400 border border-blue-500/30 shadow-sm py-1 px-3 rounded-full flex items-center gap-1.5">
+                          <CreditCard size={12} className="text-blue-400" />
+                          <span>{paymentMethodFilter}</span>
                         </Badge>
                         <button 
                           onClick={() => setPaymentMethodFilter('All')} 
-                          className="ml-2 text-gray-500 hover:text-gray-300"
+                          className="ml-2 p-1 bg-gray-800/50 text-gray-500 hover:text-gray-300 rounded-full hover:bg-gray-800/80 transition-colors"
                         >
                           <X size={12} />
                         </button>
@@ -445,29 +470,39 @@ export default function Invoices() {
                     )}
                   </div>
                   
-                  <div className="backdrop-blur-sm bg-black/20 p-4 rounded-lg border border-gray-800/60 shadow-lg">
-                    <Text className="text-gray-300 mb-3 flex items-center gap-2">
-                      <span className="p-1 rounded-md bg-amber-500/10">
-                        <CalendarRange size={14} className="text-amber-400" />
+                  <div className="backdrop-blur-sm bg-black/30 p-5 rounded-lg border border-gray-800/60 shadow-lg relative overflow-hidden">
+                    <div className="absolute inset-0 bg-gradient-to-br from-amber-500/5 to-transparent pointer-events-none"></div>
+                    <div className="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-amber-500/30 to-transparent"></div>
+                    <div className="absolute -bottom-14 -right-14 w-28 h-28 bg-amber-500/10 rounded-full blur-xl opacity-60 pointer-events-none"></div>
+                    
+                    <Text className="text-gray-300 mb-3 flex items-center gap-2 relative">
+                      <span className="p-1.5 rounded-md bg-gradient-to-br from-amber-500/20 to-amber-600/5 shadow-sm">
+                        <CalendarRange size={14} className="text-amber-400 drop-shadow-md" />
                       </span>
-                      <span>Date Range</span>
+                      <span className="font-medium">Invoice Date Range</span>
                     </Text>
-                    <DateRangePicker
-                      value={dateRange}
-                      onValueChange={setDateRange}
-                      className="bg-gray-900/80 border-gray-800/60 text-white shadow-inner"
-                      enableSelect={true}
-                      selectPlaceholder="Select dates"
-                    />
+                    
+                    <div className="mt-2">
+                      <DateRangePicker
+                        value={dateRange}
+                        onValueChange={setDateRange}
+                        className="bg-gray-900/80 border-gray-800/60 text-white shadow-inner"
+                        enableSelect={true}
+                        selectPlaceholder="Select date range"
+                      />
+                    </div>
                     
                     {dateRange?.from && dateRange?.to && (
-                      <div className="mt-2 flex items-center text-xs">
-                        <Badge className="bg-amber-500/20 text-amber-400 border border-amber-500/30 py-0.5 px-2 truncate max-w-[200px]">
-                          {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
+                      <div className="mt-3 flex items-center">
+                        <Badge className="bg-gradient-to-r from-amber-500/20 to-amber-600/20 text-amber-400 border border-amber-500/30 shadow-sm py-1 px-3 rounded-full flex items-center gap-1.5">
+                          <Calendar size={12} className="text-amber-400" />
+                          <span className="truncate max-w-[160px]">
+                            {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
+                          </span>
                         </Badge>
                         <button 
                           onClick={() => setDateRange(undefined)} 
-                          className="ml-2 text-gray-500 hover:text-gray-300 flex-shrink-0"
+                          className="ml-2 p-1 bg-gray-800/50 text-gray-500 hover:text-gray-300 rounded-full hover:bg-gray-800/80 transition-colors flex-shrink-0"
                         >
                           <X size={12} />
                         </button>
@@ -513,8 +548,9 @@ export default function Invoices() {
                   </button>
                   <button 
                     onClick={toggleFilterPanel}
-                    className="px-4 py-2 bg-gradient-to-r from-blue-600/90 to-green-600/90 text-white rounded-lg border border-blue-500/30 hover:from-blue-500/90 hover:to-green-500/90 transition-all text-sm shadow-md"
+                    className="px-4 py-2 bg-gradient-to-r from-green-600/90 to-green-500/90 text-white rounded-lg border border-green-500/30 hover:from-green-500/90 hover:to-green-400/90 transition-all text-sm shadow-md flex items-center gap-2"
                   >
+                    <CheckCircle size={14} />
                     Apply Filters
                   </button>
                 </div>
