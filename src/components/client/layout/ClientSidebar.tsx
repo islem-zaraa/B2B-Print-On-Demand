@@ -2,13 +2,11 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { 
   LayoutDashboard, 
-  Image, 
   Grid
 } from 'lucide-react';
 
 const menuItems = [
   { icon: LayoutDashboard, label: 'Overview', path: '/client' },
-  { icon: Image, label: 'My Designs', path: '/client/designs' },
   { icon: Grid, label: 'Templates', path: '/client/templates' }
 ];
 
